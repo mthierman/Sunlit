@@ -1,0 +1,24 @@
+{
+    "name": "todo",
+    "author": "mthierman",
+    "description": "todo",
+    "private": true,
+    "version": "0.0.1",
+    "main": "./src/main.js",
+    "scripts": {
+        "start": "vite",
+        "dev": "vite",
+        "build": "vite build",
+        "watch": "vite build --watch",
+        "preview": "vite preview"
+    },
+    "devDependencies": {
+        "@fluentui/svg-icons": "latest",
+        "@fluentui/web-components": "latest",
+        "@microsoft/fast-colors": "latest",
+        "autoprefixer": "latest",
+        "postcss": "latest",
+        "tailwindcss": "latest",
+        "vite": "latest"
+    }
+}
