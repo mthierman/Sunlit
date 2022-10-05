@@ -13,6 +13,9 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Microsoft.Web.WebView2.Core;
+using Microsoft.UI;
+using Microsoft.UI.Windowing;
+using WinRT.Interop;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -24,14 +27,56 @@ namespace WinUI_Todo
     /// </summary>
     public sealed partial class MainWindow : Window
     {
+        private AppWindow m_AppWindow;
         public MainWindow()
         {
             InitializeComponent();
-            Title = "Todo";
-            ExtendsContentIntoTitleBar = true;
-            SetTitleBar(AppTitleBar);
+            m_AppWindow = GetAppWindowForCurrentWindow();
+            m_AppWindow.Title = "App title";
+            //SetTitleBarColors();
+
+            //Title = "Todo";
+            //ExtendsContentIntoTitleBar = true;
+            //SetTitleBar(AppTitleBar);
             //MyWebView.NavigationStarting += EnsureHttps;
         }
+        private AppWindow GetAppWindowForCurrentWindow()
+        {
+            IntPtr hWnd = WindowNative.GetWindowHandle(this);
+            WindowId wndId = Win32Interop.GetWindowIdFromWindow(hWnd);
+            return AppWindow.GetFromWindowId(wndId);
+        }
+        //private bool SetTitleBarColors()
+        //{
+        //    // Check to see if customization is supported.
+        //    // Currently only supported on Windows 11.
+        //    if (AppWindowTitleBar.IsCustomizationSupported())
+        //    {
+        //        if (m_AppWindow is null)
+        //        {
+        //            m_AppWindow = GetAppWindowForCurrentWindow();
+        //        }
+        //        var titleBar = m_AppWindow.TitleBar;
+
+        //        // Set active window colors
+        //        titleBar.ForegroundColor = Colors.White;
+        //        titleBar.BackgroundColor = Colors.Green;
+        //        titleBar.ButtonForegroundColor = Colors.White;
+        //        titleBar.ButtonBackgroundColor = Colors.SeaGreen;
+        //        titleBar.ButtonHoverForegroundColor = Colors.Gainsboro;
+        //        titleBar.ButtonHoverBackgroundColor = Colors.DarkSeaGreen;
+        //        titleBar.ButtonPressedForegroundColor = Colors.Gray;
+        //        titleBar.ButtonPressedBackgroundColor = Colors.LightGreen;
+
+        //        // Set inactive window colors
+        //        titleBar.InactiveForegroundColor = Colors.Gainsboro;
+        //        titleBar.InactiveBackgroundColor = Colors.SeaGreen;
+        //        titleBar.ButtonInactiveForegroundColor = Colors.Gainsboro;
+        //        titleBar.ButtonInactiveBackgroundColor = Colors.SeaGreen;
+        //        return true;
+        //    }
+        //    return false;
+        //}
         //private void EnsureHttps(WebView2 sender, CoreWebView2NavigationStartingEventArgs args)
         //{
         //    String uri = args.Uri;

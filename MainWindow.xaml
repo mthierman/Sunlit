@@ -20,9 +20,9 @@
         </Grid.ColumnDefinitions>-->
         
         <!-- TITLEBAR -->
-        <Border x:Name="AppTitleBar" Grid.Column="1" VerticalAlignment="Top">
+        <!--<Border x:Name="AppTitleBar" Grid.Column="1" VerticalAlignment="Top">
             <TextBlock x:Name="AppTitle" Text="{x:Bind Title}" VerticalAlignment="Top" Margin="0,8,0,0" />
-        </Border>
+        </Border>-->
 
         <!--<TextBox Name="addressBar" Grid.Column="0"/>
         <Button x:Name="myButton" Grid.Column="1" Click="myButton_Click">Go</Button>-->
