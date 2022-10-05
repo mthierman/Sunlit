@@ -10,20 +10,25 @@
 
     <Grid>
 
-        <Grid.RowDefinitions>
+        <!--<Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
+        </Grid.ColumnDefinitions>-->
+        
+        <!-- TITLEBAR -->
+        <Border x:Name="AppTitleBar" Grid.Column="1" VerticalAlignment="Top">
+            <TextBlock x:Name="AppTitle" Text="{x:Bind Title}" VerticalAlignment="Top" Margin="0,8,0,0" />
+        </Border>
 
         <!--<TextBox Name="addressBar" Grid.Column="0"/>
         <Button x:Name="myButton" Grid.Column="1" Click="myButton_Click">Go</Button>-->
 
-        <controls:WebView2 x:Name="MyWebView"  Grid.Row="1" Grid.ColumnSpan="2"
-        Source="https://localhost:8000/" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <!--<controls:WebView2 x:Name="MyWebView"  Grid.Row="1" Grid.ColumnSpan="2"
+        Source="https://localhost:8000/" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>-->
 
     </Grid>
 

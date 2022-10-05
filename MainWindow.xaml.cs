@@ -26,7 +26,10 @@ namespace WinUI_Todo
     {
         public MainWindow()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+            Title = "Todo";
+            ExtendsContentIntoTitleBar = true;
+            SetTitleBar(AppTitleBar);
             //MyWebView.NavigationStarting += EnsureHttps;
         }
         //private void EnsureHttps(WebView2 sender, CoreWebView2NavigationStartingEventArgs args)
