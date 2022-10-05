@@ -12,3 +12,27 @@ body {
     color: black;
     background-color: white;
 }
+
+::-webkit-scrollbar {
+    width: 15px;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent-foreground-rest);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-foreground-hover);
+}
+
+::-webkit-scrollbar-track-piece {
+    background-color: var(--fill-color);
+}
+
+::-webkit-scrollbar-corner {
+    display: none;
+}
