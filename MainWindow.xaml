@@ -10,25 +10,28 @@
 
     <Grid>
 
-        <!--<Grid.RowDefinitions>
+        <!-- TITLEBAR -->
+        <Grid x:Name="AppTitleBar">
+            <Image Source="Assets/StoreLogo.png" HorizontalAlignment="Left" Width="16" Height="16" Margin="8,0,0,0"/>
+            <TextBlock x:Name="AppTitleTextBlock" Text="{x:Bind Title}" TextWrapping="NoWrap" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Top" Margin="28,6,0,0"/>
+        </Grid>
+
+        <!-- WEBVIEW -->
+        <Grid>
+
+        <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>-->
-        
-        <!-- TITLEBAR -->
-        <!--<Border x:Name="AppTitleBar" Grid.Column="1" VerticalAlignment="Top">
-            <TextBlock x:Name="AppTitle" Text="{x:Bind Title}" VerticalAlignment="Top" Margin="0,8,0,0" />
-        </Border>-->
+        </Grid.ColumnDefinitions>
 
         <!--<TextBox Name="addressBar" Grid.Column="0"/>
         <Button x:Name="myButton" Grid.Column="1" Click="myButton_Click">Go</Button>-->
-
-        <!--<controls:WebView2 x:Name="MyWebView"  Grid.Row="1" Grid.ColumnSpan="2"
-        Source="https://localhost:8000/" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>-->
+        <controls:WebView2 x:Name="MyWebView" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,28,0,0"
+        Source="https://localhost:8000/" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 
     </Grid>
 

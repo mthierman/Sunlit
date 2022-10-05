@@ -27,25 +27,40 @@ namespace WinUI_Todo
     /// </summary>
     public sealed partial class MainWindow : Window
     {
-        private AppWindow m_AppWindow;
+        //private AppWindow m_AppWindow;
         public MainWindow()
         {
             InitializeComponent();
-            m_AppWindow = GetAppWindowForCurrentWindow();
-            m_AppWindow.Title = "App title";
+
+            Title = "Test Title";
+            ExtendsContentIntoTitleBar = true;
+            SetTitleBar(AppTitleBar);
+
+            //m_AppWindow = GetAppWindowForCurrentWindow();
+            //if (AppWindowTitleBar.IsCustomizationSupported())
+            //{
+            //    var titleBar = m_AppWindow.TitleBar;
+            //    //titleBar.IconShowOptions = IconShowOptions.HideIconAndSystemMenu;
+            //    titleBar.ExtendsContentIntoTitleBar = true;
+            //    SetTitleBar(AppTitleBar);
+            //}
+            //else
+            //{
+            //    AppTitleBar.Visibility = Visibility.Collapsed;
+            //}
+            //m_AppWindow = GetAppWindowForCurrentWindow();
+            //m_AppWindow.Title = "App title";
+
             //SetTitleBarColors();
 
-            //Title = "Todo";
-            //ExtendsContentIntoTitleBar = true;
-            //SetTitleBar(AppTitleBar);
             //MyWebView.NavigationStarting += EnsureHttps;
         }
-        private AppWindow GetAppWindowForCurrentWindow()
-        {
-            IntPtr hWnd = WindowNative.GetWindowHandle(this);
-            WindowId wndId = Win32Interop.GetWindowIdFromWindow(hWnd);
-            return AppWindow.GetFromWindowId(wndId);
-        }
+        //private AppWindow GetAppWindowForCurrentWindow()
+        //{
+        //    IntPtr hWnd = WindowNative.GetWindowHandle(this);
+        //    WindowId wndId = Win32Interop.GetWindowIdFromWindow(hWnd);
+        //    return AppWindow.GetFromWindowId(wndId);
+        //}
         //private bool SetTitleBarColors()
         //{
         //    // Check to see if customization is supported.
