@@ -28,34 +28,10 @@
 body {
     color: var(--fg);
     background-color: var(--bg);
-    margin: 15px;
+    margin: 0 2em;
 }
 
 ::selection {
     color: var(--bg);
     background-color: var(--fg);
 }
-
-/*::-webkit-scrollbar {
-    width: 15px;
-}
-
-::-webkit-scrollbar-button {
-    display: none;
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--grey);
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--fg);
-}
-
-::-webkit-scrollbar-track-piece {
-    background-color: var(--bg);
-}
-
-::-webkit-scrollbar-corner {
-    display: none;
-}*/

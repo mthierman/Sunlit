@@ -64,17 +64,19 @@ namespace WinUI_Todo
 
             //MyWebView.NavigationStarting += EnsureHttps;
         }
-        private void SwtichPresenter_CompOverlay(object sender, RoutedEventArgs e)
+        private void SwitchPresenter_CompOverlay(object sender, RoutedEventArgs e)
         {
             m_AppWindow = GetAppWindowForCurrentWindow();
-
+            ToggleButton toggleButton = sender as ToggleButton;
             if (((ToggleButton)sender).IsChecked == false)
             {
                 m_AppWindow.SetPresenter(AppWindowPresenterKind.Default);
+                toggleButton.Content = "\uEE49";
             }
             else
             {
                 m_AppWindow.SetPresenter(AppWindowPresenterKind.CompactOverlay);
+                toggleButton.Content = "\uEE47";
             }
 
             //if (((ToggleButton)sender).IsEnabled == true)
