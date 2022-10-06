@@ -20,34 +20,11 @@ using WinRT.Interop;
 using System.Runtime.InteropServices;
 using System.ComponentModel;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace WinUI_Todo
 {
-    /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainWindow : Window
     {
         private AppWindow m_AppWindow;
-
-        //public class WindowHandling
-        //{
-        //    public enum DWMWINDOWATTRIBUTE
-        //    {
-        //        DWMWA_USE_IMMERSIVE_DARK_MODE = 20
-        //    }
-        //    [DllImport("DwmApi")]
-        //    private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
-
-        //    public static void UseImmersiveDarkMode(IntPtr handle, bool enabled)
-        //    {
-        //        var attribute = DWMWA_USE_IMMERSIVE_DARK_MODE;
-        //        int useImmersiveDarkMode = enabled ? 1 : 0;
-        //        return DwmSetWindowAttribute(handle, (int)attribute, ref useImmersiveDarkMode, sizeof(int)) == 0;
-        //    }
-        //}
 
         public enum DWMWINDOWATTRIBUTE
         {
@@ -59,7 +36,6 @@ namespace WinUI_Todo
             [DllImport("dwmapi.dll")]
             public static extern int DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttr, ref int pvAttr, int cbAttr);
         }
-
 
         public static void SetWindowImmersiveDarkMode(IntPtr hWnd, bool enabled)
         {
@@ -109,6 +85,7 @@ namespace WinUI_Todo
 
             //MyWebView.NavigationStarting += EnsureHttps;
         }
+
         private void SwitchPresenter_CompOverlay(object sender, RoutedEventArgs e)
         {
             m_AppWindow = GetAppWindowForCurrentWindow();
@@ -124,26 +101,15 @@ namespace WinUI_Todo
                 toggleButton.Content = "\uEE47";
                 m_AppWindow.Resize(new Windows.Graphics.SizeInt32 { Width = 600, Height = 600 });
             }
-
-            //if (((ToggleButton)sender).IsEnabled == true)
-            //{
-            //    m_AppWindow.SetPresenter(AppWindowPresenterKind.CompactOverlay);
-            //}
-            //if (((ToggleButton)sender).IsEnabled == false)
-            //{
-            //    m_AppWindow.SetPresenter(AppWindowPresenterKind.Default);
-            //}
-            //else
-            //{
-            //    m_AppWindow.SetPresenter(AppWindowPresenterKind.FullScreen);
-            //}
         }
+
         private AppWindow GetAppWindowForCurrentWindow()
         {
             IntPtr hWnd = WindowNative.GetWindowHandle(this);
             WindowId wndId = Win32Interop.GetWindowIdFromWindow(hWnd);
             return AppWindow.GetFromWindowId(wndId);
         }
+
         //private bool SetTitleBarColors()
         //{
         //    // Check to see if customization is supported.
@@ -175,6 +141,7 @@ namespace WinUI_Todo
         //    }
         //    return false;
         //}
+
         //private void EnsureHttps(WebView2 sender, CoreWebView2NavigationStartingEventArgs args)
         //{
         //    String uri = args.Uri;
@@ -188,6 +155,7 @@ namespace WinUI_Todo
         //        addressBar.Text = uri;
         //    }
         //}
+
         //private void myButton_Click(object sender, RoutedEventArgs e)
         //{
         //    try
