@@ -19,6 +19,7 @@
 
         <!-- TITLEBAR -->
         <Grid
+            Grid.Row="0"
             x:Name="AppTitleBar">
             <!--<Image
                 Source="Assets/StoreLogo.png"
@@ -36,10 +37,12 @@
         </Grid>
 
         <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            
+            <AutoSuggestBox
+                Width="200"
+                VerticalContentAlignment="Center"
+                QueryIcon="Find"
+                Margin="36,8"/>
+
             <ToggleButton
                 Click="SwitchPresenter_CompOverlay"
                 Content="&#xEE49;"
@@ -48,12 +51,6 @@
                 Margin="8,8">
                 <!--<FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEE49;"/>-->
             </ToggleButton>
-
-            <AutoSuggestBox
-                Width="200"
-                VerticalContentAlignment="Center"
-                QueryIcon="Find"
-                Margin="8,8"/>
         </Grid>
 
         <!-- WEBVIEW -->

@@ -38,6 +38,7 @@ namespace WinUI_Todo
             SetTitleBar(AppTitleBar);
 
             m_AppWindow = GetAppWindowForCurrentWindow();
+            m_AppWindow.Resize(new Windows.Graphics.SizeInt32 { Width = 480, Height = 480 });
 
             //var windowHandle = WindowNative.GetWindowHandle(this);
             //var windowID = Win32Interop.GetWindowIdFromWindow(windowHandle);
