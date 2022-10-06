@@ -13,6 +13,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Microsoft.Web.WebView2.Core;
+using WinRT;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using WinRT.Interop;
@@ -27,7 +28,7 @@ namespace WinUI_Todo
     /// </summary>
     public sealed partial class MainWindow : Window
     {
-        //private AppWindow m_AppWindow;
+        private AppWindow m_AppWindow;
         public MainWindow()
         {
             InitializeComponent();
@@ -35,6 +36,14 @@ namespace WinUI_Todo
             Title = "Test Title";
             ExtendsContentIntoTitleBar = true;
             SetTitleBar(AppTitleBar);
+
+            m_AppWindow = GetAppWindowForCurrentWindow();
+
+            //var windowHandle = WindowNative.GetWindowHandle(this);
+            //var windowID = Win32Interop.GetWindowIdFromWindow(windowHandle);
+            //var appWindow = AppWindow.GetFromWindowId(windowID);
+            //appWindow.SetPresenter(AppWindowPresenterKind.CompactOverlay);
+            //AppTitleBar.Visibility = Visibility.Collapsed;
 
             //m_AppWindow = GetAppWindowForCurrentWindow();
             //if (AppWindowTitleBar.IsCustomizationSupported())
@@ -55,12 +64,38 @@ namespace WinUI_Todo
 
             //MyWebView.NavigationStarting += EnsureHttps;
         }
-        //private AppWindow GetAppWindowForCurrentWindow()
-        //{
-        //    IntPtr hWnd = WindowNative.GetWindowHandle(this);
-        //    WindowId wndId = Win32Interop.GetWindowIdFromWindow(hWnd);
-        //    return AppWindow.GetFromWindowId(wndId);
-        //}
+        private void SwtichPresenter_CompOverlay(object sender, RoutedEventArgs e)
+        {
+            m_AppWindow = GetAppWindowForCurrentWindow();
+
+            if (((ToggleButton)sender).IsChecked == false)
+            {
+                m_AppWindow.SetPresenter(AppWindowPresenterKind.Default);
+            }
+            else
+            {
+                m_AppWindow.SetPresenter(AppWindowPresenterKind.CompactOverlay);
+            }
+
+            //if (((ToggleButton)sender).IsEnabled == true)
+            //{
+            //    m_AppWindow.SetPresenter(AppWindowPresenterKind.CompactOverlay);
+            //}
+            //if (((ToggleButton)sender).IsEnabled == false)
+            //{
+            //    m_AppWindow.SetPresenter(AppWindowPresenterKind.Default);
+            //}
+            //else
+            //{
+            //    m_AppWindow.SetPresenter(AppWindowPresenterKind.FullScreen);
+            //}
+        }
+        private AppWindow GetAppWindowForCurrentWindow()
+        {
+            IntPtr hWnd = WindowNative.GetWindowHandle(this);
+            WindowId wndId = Win32Interop.GetWindowIdFromWindow(hWnd);
+            return AppWindow.GetFromWindowId(wndId);
+        }
         //private bool SetTitleBarColors()
         //{
         //    // Check to see if customization is supported.
