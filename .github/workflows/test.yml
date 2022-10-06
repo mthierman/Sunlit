@@ -9,5 +9,5 @@ jobs:
         steps:
             - name: Test
               run: |
-                  import-module appx
+                  import-module appx -usewindowspowershell
                   (get-appxpackage micro*win*appruntime*).packagefullname
