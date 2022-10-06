@@ -37,11 +37,11 @@
         </Grid>
 
         <Grid Grid.Row="1">
-            <AutoSuggestBox
+            <!--<AutoSuggestBox
                 Width="200"
                 VerticalContentAlignment="Center"
                 QueryIcon="Find"
-                Margin="36,8"/>
+                Margin="36,8"/>-->
 
             <ToggleButton
                 Click="SwitchPresenter_CompOverlay"
