@@ -8,4 +8,6 @@ jobs:
         runs-on: windows-latest
         steps:
             - name: Test
-              run: (get-appxpackage micro*win*appruntime*).packagefullname
+              run: |
+                  import-module appx
+                  (get-appxpackage micro*win*appruntime*).packagefullname
