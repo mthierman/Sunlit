@@ -17,6 +17,8 @@ using WinRT;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using WinRT.Interop;
+using System.Runtime.InteropServices;
+using System.ComponentModel;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -29,12 +31,54 @@ namespace WinUI_Todo
     public sealed partial class MainWindow : Window
     {
         private AppWindow m_AppWindow;
+
+        //public class WindowHandling
+        //{
+        //    public enum DWMWINDOWATTRIBUTE
+        //    {
+        //        DWMWA_USE_IMMERSIVE_DARK_MODE = 20
+        //    }
+        //    [DllImport("DwmApi")]
+        //    private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
+
+        //    public static void UseImmersiveDarkMode(IntPtr handle, bool enabled)
+        //    {
+        //        var attribute = DWMWA_USE_IMMERSIVE_DARK_MODE;
+        //        int useImmersiveDarkMode = enabled ? 1 : 0;
+        //        return DwmSetWindowAttribute(handle, (int)attribute, ref useImmersiveDarkMode, sizeof(int)) == 0;
+        //    }
+        //}
+
+        public enum DWMWINDOWATTRIBUTE
+        {
+            DWMWA_USE_IMMERSIVE_DARK_MODE = 20
+        }
+
+        public class PInvoke
+        {
+            [DllImport("dwmapi.dll")]
+            public static extern int DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttr, ref int pvAttr, int cbAttr);
+        }
+
+
+        public static void SetWindowImmersiveDarkMode(IntPtr hWnd, bool enabled)
+        {
+            int isEnabled = enabled ? 1 : 0;
+            int result = PInvoke.DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref isEnabled, sizeof(int));
+            if (result != 0) throw new Win32Exception(result);
+        }
+
         public MainWindow()
         {
+            IntPtr hWnd = WindowNative.GetWindowHandle(this);
+            if (App.Current.RequestedTheme == ApplicationTheme.Dark)
+            {
+                SetWindowImmersiveDarkMode(hWnd, true);
+            }
             InitializeComponent();
 
             Title = "Test Title";
-            ExtendsContentIntoTitleBar = true;
+            ExtendsContentIntoTitleBar = false;
             SetTitleBar(AppTitleBar);
 
             m_AppWindow = GetAppWindowForCurrentWindow();
@@ -78,6 +122,7 @@ namespace WinUI_Todo
             {
                 m_AppWindow.SetPresenter(AppWindowPresenterKind.CompactOverlay);
                 toggleButton.Content = "\uEE47";
+                m_AppWindow.Resize(new Windows.Graphics.SizeInt32 { Width = 600, Height = 600 });
             }
 
             //if (((ToggleButton)sender).IsEnabled == true)

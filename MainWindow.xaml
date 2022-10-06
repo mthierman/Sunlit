@@ -12,7 +12,8 @@
 
         <Grid.RowDefinitions>
             <!--<RowDefinition Height="48"/>-->
-            <RowDefinition Height="32"/>
+            <!--<RowDefinition Height="32"/>-->
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
