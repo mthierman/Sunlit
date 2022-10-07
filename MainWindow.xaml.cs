@@ -7,7 +7,6 @@ using WinRT.Interop;
 using System.Runtime.InteropServices;
 using System.ComponentModel;
 using Windows.UI.ViewManagement;
-using Windows.UI.Core;
 
 namespace WinUI_Todo
 {
@@ -29,12 +28,26 @@ namespace WinUI_Todo
             Title = "Todo";
             InitializeComponent();
 
-            _uiSettings.ColorValuesChanged += ColorValuesChanged;
+            StartListener();
 
             MyAppWindow.Resize(new Windows.Graphics.SizeInt32 { Width = 480, Height = 480 });
         }
 
         private readonly UISettings _uiSettings = new UISettings();
+
+        private bool EventHandlersCreated;
+
+        private void StartListener()
+        {
+            EventHandlersCreated = true;
+            _uiSettings.ColorValuesChanged += ColorValuesChanged;
+        }
+
+        private void StopListener()
+        {
+            EventHandlersCreated = false;
+            _uiSettings.ColorValuesChanged -= ColorValuesChanged;
+        }
 
         private IntPtr WinHandle
         {
@@ -118,7 +131,10 @@ namespace WinUI_Todo
 
         public void WindowClosed(object sender, WindowEventArgs e)
         {
-            _uiSettings.ColorValuesChanged -= ColorValuesChanged;
+            if (EventHandlersCreated)
+            {
+                StopListener();
+            }
         }
     }
 }
