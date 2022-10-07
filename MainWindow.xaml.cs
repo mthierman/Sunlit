@@ -6,6 +6,7 @@ using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using Windows.UI.ViewManagement;
+using WinRT;
 using WinRT.Interop;
 
 namespace WinUI_Todo
@@ -32,34 +33,44 @@ namespace WinUI_Todo
 
             InitializeComponent();
 
-            StartListener();
+            //StartListener();
 
-            //MyAppWindow.Resize(new Windows.Graphics.SizeInt32 { Width = 480, Height = 480 });
+            TrySetMicaBackdrop();
         }
 
         // LISTENER
         private readonly UISettings _uiSettings = new();
 
-        private bool EventHandlersCreated;
+        //private bool EventHandlersCreated;
 
-        private void StartListener()
-        {
-            EventHandlersCreated = true;
-            _uiSettings.ColorValuesChanged += ColorValuesChanged;
-        }
+        //private void StartListener()
+        //{
+        //    EventHandlersCreated = true;
+        //    _uiSettings.ColorValuesChanged += ColorValuesChanged;
+        //}
 
-        private void StopListener()
+        //private void StopListener()
+        //{
+        //    EventHandlersCreated = false;
+        //    _uiSettings.ColorValuesChanged -= ColorValuesChanged;
+        //}
+
+        private void WindowActivated(object sender, WindowActivatedEventArgs e)
         {
-            EventHandlersCreated = false;
-            _uiSettings.ColorValuesChanged -= ColorValuesChanged;
+            m_configurationSource.IsInputActive = e.WindowActivationState != WindowActivationState.Deactivated;
         }
 
         public void WindowClosed(object sender, WindowEventArgs e)
         {
-            if (EventHandlersCreated)
+            //if (EventHandlersCreated)
+            //{ StopListener(); }
+            if (m_micaController != null)
             {
-                StopListener();
+                m_micaController.Dispose();
+                m_micaController = null;
             }
+            this.Activated -= WindowActivated;
+            m_configurationSource = null;
         }
 
         // APP WINDOW
@@ -81,8 +92,102 @@ namespace WinUI_Todo
             { return AppWindow.GetFromWindowId(WinID); }
         }
 
-        // COMPACT OVERLAY
+        // ACRYLIC
+        class WindowsSystemDispatcherQueueHelper
+        {
+            [StructLayout(LayoutKind.Sequential)]
+            struct DispatcherQueueOptions
+            {
+                internal int dwSize;
+                internal int threadType;
+                internal int apartmentType;
+            }
 
+            [DllImport("CoreMessaging.dll")]
+            private static extern int CreateDispatcherQueueController([In] DispatcherQueueOptions options, [In, Out, MarshalAs(UnmanagedType.IUnknown)] ref object dispatcherQueueController);
+
+            object m_dispatcherQueueController = null;
+            public void EnsureWindowsSystemDispatcherQueueController()
+            {
+                if (Windows.System.DispatcherQueue.GetForCurrentThread() != null)
+                {
+                    // one already exists, so we'll just use it.
+                    return;
+                }
+
+                if (m_dispatcherQueueController == null)
+                {
+                    DispatcherQueueOptions options;
+                    options.dwSize = Marshal.SizeOf(typeof(DispatcherQueueOptions));
+                    options.threadType = 2;    // DQTYPE_THREAD_CURRENT
+                    options.apartmentType = 2; // DQTAT_COM_STA
+
+                    CreateDispatcherQueueController(options, ref m_dispatcherQueueController);
+                }
+            }
+        }
+
+        WindowsSystemDispatcherQueueHelper m_wsdqHelper; // See separate sample below for implementation
+        Microsoft.UI.Composition.SystemBackdrops.MicaController m_micaController;
+        Microsoft.UI.Composition.SystemBackdrops.SystemBackdropConfiguration m_configurationSource;
+
+        bool TrySetMicaBackdrop()
+        {
+            if (Microsoft.UI.Composition.SystemBackdrops.MicaController.IsSupported())
+            {
+                m_wsdqHelper = new WindowsSystemDispatcherQueueHelper();
+                m_wsdqHelper.EnsureWindowsSystemDispatcherQueueController();
+
+                // Hooking up the policy object
+                m_configurationSource = new Microsoft.UI.Composition.SystemBackdrops.SystemBackdropConfiguration();
+                this.Activated += WindowActivated;
+                this.Closed += WindowClosed;
+                ((FrameworkElement)this.Content).ActualThemeChanged += WindowThemeChanged;
+
+                // Initial configuration state.
+                m_configurationSource.IsInputActive = true;
+                SetConfigurationSourceTheme();
+
+                m_micaController = new Microsoft.UI.Composition.SystemBackdrops.MicaController();
+
+                // Enable the system backdrop.
+                // Note: Be sure to have "using WinRT;" to support the Window.As<...>() call.
+                m_micaController.AddSystemBackdropTarget(this.As<Microsoft.UI.Composition.ICompositionSupportsSystemBackdrop>());
+                m_micaController.SetSystemBackdropConfiguration(m_configurationSource);
+                return true; // succeeded
+            }
+
+            return false; // Mica is not supported on this system
+        }
+
+        private void WindowThemeChanged(FrameworkElement sender, object args)
+        {
+            if (m_configurationSource != null)
+            {
+                SetConfigurationSourceTheme();
+            }
+            var color = _uiSettings.GetColorValue(UIColorType.Background);
+            if (color.ToString() == "#FF000000")
+            {
+                SetWindowImmersiveDarkMode(WinHandle, true);
+            }
+            else
+            {
+                SetWindowImmersiveDarkMode(WinHandle, false);
+            }
+        }
+
+        private void SetConfigurationSourceTheme()
+        {
+            switch (((FrameworkElement)this.Content).ActualTheme)
+            {
+                case ElementTheme.Dark: m_configurationSource.Theme = Microsoft.UI.Composition.SystemBackdrops.SystemBackdropTheme.Dark; break;
+                case ElementTheme.Light: m_configurationSource.Theme = Microsoft.UI.Composition.SystemBackdrops.SystemBackdropTheme.Light; break;
+                case ElementTheme.Default: m_configurationSource.Theme = Microsoft.UI.Composition.SystemBackdrops.SystemBackdropTheme.Default; break;
+            }
+        }
+
+        // COMPACT OVERLAY
         private OverlappedPresenter MyDefaultPresenter;
         private OverlappedPresenter MyCompactPresenter;
 
@@ -166,17 +271,17 @@ namespace WinUI_Todo
             if (result != 0) throw new Win32Exception(result);
         }
 
-        private void ColorValuesChanged(UISettings sender, object args)
-        {
-            var color = _uiSettings.GetColorValue(UIColorType.Background);
-            if (color.ToString() == "#FF000000")
-            {
-                SetWindowImmersiveDarkMode(WinHandle, true);
-            }
-            else
-            {
-                SetWindowImmersiveDarkMode(WinHandle, false);
-            }
-        }
+        //private void ColorValuesChanged(UISettings sender, object args)
+        //{
+        //    var color = _uiSettings.GetColorValue(UIColorType.Background);
+        //    if (color.ToString() == "#FF000000")
+        //    {
+        //        SetWindowImmersiveDarkMode(WinHandle, true);
+        //    }
+        //    else
+        //    {
+        //        SetWindowImmersiveDarkMode(WinHandle, false);
+        //    }
+        //}
     }
 }
