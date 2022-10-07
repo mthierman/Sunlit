@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Microsoft.UI.Xaml.Shapes;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,6 +20,8 @@ using Microsoft.UI.Windowing;
 using WinRT.Interop;
 using System.Runtime.InteropServices;
 using System.ComponentModel;
+using Windows.UI.Core;
+using Microsoft.Win32;
 
 namespace WinUI_Todo
 {
@@ -31,7 +34,7 @@ namespace WinUI_Todo
             DWMWA_USE_IMMERSIVE_DARK_MODE = 20
         }
 
-        public class PInvoke
+        public class PInvokeTheme
         {
             [DllImport("dwmapi.dll")]
             public static extern int DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttr, ref int pvAttr, int cbAttr);
@@ -40,46 +43,39 @@ namespace WinUI_Todo
         public static void SetWindowImmersiveDarkMode(IntPtr hWnd, bool enabled)
         {
             int isEnabled = enabled ? 1 : 0;
-            int result = PInvoke.DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref isEnabled, sizeof(int));
+            int result = PInvokeTheme.DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref isEnabled, sizeof(int));
             if (result != 0) throw new Win32Exception(result);
         }
 
         public MainWindow()
         {
+            Title = "Test Title";
+
             IntPtr hWnd = WindowNative.GetWindowHandle(this);
             if (App.Current.RequestedTheme == ApplicationTheme.Dark)
             {
                 SetWindowImmersiveDarkMode(hWnd, true);
             }
+
             InitializeComponent();
 
-            Title = "Test Title";
-            ExtendsContentIntoTitleBar = false;
-            SetTitleBar(AppTitleBar);
-
             m_AppWindow = GetAppWindowForCurrentWindow();
+
             m_AppWindow.Resize(new Windows.Graphics.SizeInt32 { Width = 480, Height = 480 });
 
-            //var windowHandle = WindowNative.GetWindowHandle(this);
-            //var windowID = Win32Interop.GetWindowIdFromWindow(windowHandle);
-            //var appWindow = AppWindow.GetFromWindowId(windowID);
-            //appWindow.SetPresenter(AppWindowPresenterKind.CompactOverlay);
-            //AppTitleBar.Visibility = Visibility.Collapsed;
+            //SystemEvents.UserPreferenceChanged += new UserPreferenceChangedEventHandler(SystemEvents_UserPreferenceChanged);
+            //StartListening();
 
-            //m_AppWindow = GetAppWindowForCurrentWindow();
-            //if (AppWindowTitleBar.IsCustomizationSupported())
-            //{
-            //    var titleBar = m_AppWindow.TitleBar;
-            //    //titleBar.IconShowOptions = IconShowOptions.HideIconAndSystemMenu;
-            //    titleBar.ExtendsContentIntoTitleBar = true;
-            //    SetTitleBar(AppTitleBar);
-            //}
-            //else
-            //{
-            //    AppTitleBar.Visibility = Visibility.Collapsed;
-            //}
-            //m_AppWindow = GetAppWindowForCurrentWindow();
-            //m_AppWindow.Title = "App title";
+            if (AppWindowTitleBar.IsCustomizationSupported())
+            {
+                ExtendsContentIntoTitleBar = true;
+                SetTitleBar(AppTitleBar);
+            }
+            else
+            {
+                AppTitleBar.Visibility = Visibility.Collapsed;
+                //titleBar.IconShowOptions = IconShowOptions.HideIconAndSystemMenu;
+            }
 
             //SetTitleBarColors();
 
@@ -109,6 +105,53 @@ namespace WinUI_Todo
             WindowId wndId = Win32Interop.GetWindowIdFromWindow(hWnd);
             return AppWindow.GetFromWindowId(wndId);
         }
+
+        //public delegate void UserPreferenceChangedEventHandler(object sender, UserPreferenceChangedEventArgs e);
+
+        //public event UserPreferenceChangedEventHandler UserPreferenceChanged;
+
+        //public bool eventHandlersCreated;
+
+        //public void StartListening()
+        //{
+        //    SystemEvents.UserPreferenceChanged += new UserPreferenceChangedEventHandler(SystemEvents_UserPreferenceChanged);
+        //    System.Diagnostics.Debug.WriteLine("Started listening!!!");
+        //    eventHandlersCreated = true;
+        //}
+
+        //public void StopListening()
+        //{
+        //    SystemEvents.UserPreferenceChanged -= new UserPreferenceChangedEventHandler(SystemEvents_UserPreferenceChanged);
+        //    System.Diagnostics.Debug.WriteLine("Stopped listening!!!");
+        //    eventHandlersCreated = false;
+        //}
+
+        //private void StartListening()
+        //{
+        //    SystemEvents.UserPreferenceChanged += new UserPreferenceChangedEventHandler(SystemEvents_UserPreferenceChanged);
+        //    System.Diagnostics.Debug.WriteLine("Started listening!!!");
+        //}
+
+        //private void SystemEvents_UserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
+        //{
+        //    System.Diagnostics.Debug.WriteLine("Theme changed!!!");
+        //}
+
+        //public void WindowClosed(object sender, WindowEventArgs e)
+        //{
+        //    SystemEvents.UserPreferenceChanged -= new UserPreferenceChangedEventHandler(SystemEvents_UserPreferenceChanged);
+        //    System.Diagnostics.Debug.WriteLine("Closed!!!");
+        //}
+
+        //public void WindowClosed(object sender, WindowEventArgs e)
+        //{
+        //    if (eventHandlersCreated)
+        //    {
+        //        SystemEvents.UserPreferenceChanged -= new UserPreferenceChangedEventHandler(SystemEvents_UserPreferenceChanged);
+        //        System.Diagnostics.Debug.WriteLine("Closed!!!");
+        //        //StopListening();
+        //    }
+        //}
 
         //private bool SetTitleBarColors()
         //{
@@ -153,19 +196,6 @@ namespace WinUI_Todo
         //    else
         //    {
         //        addressBar.Text = uri;
-        //    }
-        //}
-
-        //private void myButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        Uri targetUri = new Uri(addressBar.Text);
-        //        MyWebView.Source = targetUri;
-        //    }
-        //    catch (FormatException ex)
-        //    {
-        //        // Incorrect address entered.
         //    }
         //}
     }

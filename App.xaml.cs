@@ -10,12 +10,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using Windows.Win32;
+using Microsoft.Win32;
+using Windows.UI.Xaml;
+using System.Threading;
 
 namespace WinUI_Todo
 {
@@ -23,8 +26,6 @@ namespace WinUI_Todo
     {
         public App()
         {
-            PInvoke.SystemEvents.UserPreferenceChanging += new
-                UserPreferenceChangingEventHandler(SystemEvents_UserPreferenceChanging);
             this.InitializeComponent();
             Environment.SetEnvironmentVariable("WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", "--enable-features=OverlayScrollbar,msOverlayScrollbarWinStyle:scrollbar_mode/minimal_mode,msOverlayScrollbarWinStyleAnimation");
             //Environment.SetEnvironmentVariable("WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", "--enable-features=OverlayScrollbar,msOverlayScrollbarWinStyle:scrollbar_mode/full_mode,msOverlayScrollbarWinStyleAnimation");
@@ -34,7 +35,13 @@ namespace WinUI_Todo
         {
             m_window = new MainWindow();
             m_window.Activate();
+            //new Thread(RunMessagePump).Start();
         }
+
+        //void RunMessagePump()
+        //{
+        //    System.Diagnostics.Debug.WriteLine("Starting Message Pump!!!");
+        //}
 
         private Window m_window;
     }
