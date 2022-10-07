@@ -14,6 +14,8 @@ namespace WinUI_Todo
     {
         public MainWindow()
         {
+            ImportTheme.SetPreferredAppMode(PreferredAppMode.AllowDark);
+
             IntPtr hWnd = WindowNative.GetWindowHandle(this);
             if (App.Current.RequestedTheme == ApplicationTheme.Dark)
             {
@@ -22,6 +24,7 @@ namespace WinUI_Todo
 
             Title = "Todo";
             InitializeComponent();
+
             _uiSettings.ColorValuesChanged += ColorValuesChanged;
 
             m_AppWindow = GetAppWindowForCurrentWindow();
@@ -54,25 +57,41 @@ namespace WinUI_Todo
             }
         }
 
-        public class ImportWindow
+        class ImportTheme
+        {
+            [DllImport("uxtheme.dll", EntryPoint = "#135", SetLastError = true, CharSet = CharSet.Unicode)]
+            public static extern int SetPreferredAppMode(PreferredAppMode preferredAppMode);
+
+        }
+
+        private enum PreferredAppMode
+        {
+            Default,
+            AllowDark,
+            ForceDark,
+            ForceLight,
+            Max
+        }
+
+        private class ImportWindow
         {
             [DllImport("dwmapi.dll")]
             public static extern int DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttr, ref int pvAttr, int cbAttr);
         }
 
-        public enum DWMWINDOWATTRIBUTE
+        private enum DWMWINDOWATTRIBUTE
         {
             DWMWA_USE_IMMERSIVE_DARK_MODE = 20
         }
 
-        public static void SetWindowImmersiveDarkMode(IntPtr hWnd, bool enabled)
+        private static void SetWindowImmersiveDarkMode(IntPtr hWnd, bool enabled)
         {
             int isEnabled = enabled ? 1 : 0;
             int result = ImportWindow.DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref isEnabled, sizeof(int));
             if (result != 0) throw new Win32Exception(result);
         }
 
-        public void TestColor()
+        private void TestColor()
         {
             var uiSettings = new Windows.UI.ViewManagement.UISettings();
             var color = uiSettings.GetColorValue(Windows.UI.ViewManagement.UIColorType.Background);

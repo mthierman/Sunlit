@@ -10,6 +10,10 @@
                 <!-- Other merged dictionaries here -->
             </ResourceDictionary.MergedDictionaries>
             <!-- Other app resources here -->
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary Source="ResourceDictionary1.xaml" x:Key="Light"/>
+                <ResourceDictionary Source="ResourceDictionary2.xaml" x:Key="Dark"/>
+            </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -16,23 +16,6 @@ namespace WinUI_Todo
         {
             m_window = new MainWindow();
             m_window.Activate();
-            ImportTheme.SetPreferredAppMode(PreferredAppMode.AllowDark);
-        }
-
-        class ImportTheme
-        {
-            [DllImport("uxtheme.dll", EntryPoint = "#135", SetLastError = true, CharSet = CharSet.Unicode)]
-            public static extern int SetPreferredAppMode(PreferredAppMode preferredAppMode);
-
-        }
-
-        private enum PreferredAppMode
-        {
-            Default,
-            AllowDark,
-            ForceDark,
-            ForceLight,
-            Max
         }
 
         private Window m_window;
