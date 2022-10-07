@@ -1,17 +1,18 @@
-﻿using Microsoft.UI.Xaml;
+﻿using Microsoft.UI;
+using Microsoft.UI.Windowing;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using System;
-using Microsoft.UI;
-using Microsoft.UI.Windowing;
-using WinRT.Interop;
-using System.Runtime.InteropServices;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using Windows.UI.ViewManagement;
+using WinRT.Interop;
 
 namespace WinUI_Todo
 {
     public sealed partial class MainWindow : Window
     {
+        // MAIN WINDOW
         public MainWindow()
         {
             _ = ImportTheme.SetPreferredAppMode(PreferredAppMode.AllowDark);
@@ -26,14 +27,18 @@ namespace WinUI_Todo
             }
 
             Title = "Todo";
+
+            DefaultPresenter();
+
             InitializeComponent();
 
             StartListener();
 
-            MyAppWindow.Resize(new Windows.Graphics.SizeInt32 { Width = 480, Height = 480 });
+            //MyAppWindow.Resize(new Windows.Graphics.SizeInt32 { Width = 480, Height = 480 });
         }
 
-        private readonly UISettings _uiSettings = new UISettings();
+        // LISTENER
+        private readonly UISettings _uiSettings = new();
 
         private bool EventHandlersCreated;
 
@@ -49,40 +54,85 @@ namespace WinUI_Todo
             _uiSettings.ColorValuesChanged -= ColorValuesChanged;
         }
 
+        public void WindowClosed(object sender, WindowEventArgs e)
+        {
+            if (EventHandlersCreated)
+            {
+                StopListener();
+            }
+        }
+
+        // APP WINDOW
         private IntPtr WinHandle
         {
             get
             { return WindowNative.GetWindowHandle(this); }
         }
 
+        private WindowId WinID
+        {
+            get
+            { return Win32Interop.GetWindowIdFromWindow(WinHandle); }
+        }
+
         private AppWindow MyAppWindow
         {
             get
-            { return GetAppWindowForCurrentWindow(); }
+            { return AppWindow.GetFromWindowId(WinID); }
         }
 
-        private AppWindow GetAppWindowForCurrentWindow()
+        // COMPACT OVERLAY
+
+        private OverlappedPresenter MyDefaultPresenter;
+        private OverlappedPresenter MyCompactPresenter;
+
+        public int DefaultWidth { get; set; } = 600;
+        public int DefaultHeight { get; set; } = 600;
+
+        public int CompactWidth { get; set; } = 400;
+        public int CompactHeight { get; set; } = 400;
+
+        private void DefaultPresenter()
         {
-            WindowId wndId = Win32Interop.GetWindowIdFromWindow(WinHandle);
-            return AppWindow.GetFromWindowId(wndId);
+            MyAppWindow.SetPresenter(AppWindowPresenterKind.Default);
+            MyDefaultPresenter = MyAppWindow.Presenter as OverlappedPresenter;
+            MyAppWindow.Resize(new Windows.Graphics.SizeInt32 { Width = DefaultWidth, Height = DefaultHeight });
+            MyDefaultPresenter.IsAlwaysOnTop = false;
+            MyDefaultPresenter.IsMaximizable = true;
+            MyDefaultPresenter.IsMinimizable = true;
         }
 
-        private void SwitchPresenter_CompOverlay(object sender, RoutedEventArgs e)
+        private void CompactPresenter()
+        {
+            MyAppWindow.SetPresenter(AppWindowPresenterKind.Overlapped);
+            MyCompactPresenter = MyAppWindow.Presenter as OverlappedPresenter;
+            MyAppWindow.Resize(new Windows.Graphics.SizeInt32 { Width = CompactWidth, Height = CompactHeight });
+            MyCompactPresenter.IsAlwaysOnTop = true;
+            MyCompactPresenter.IsMaximizable = false;
+            MyCompactPresenter.IsMinimizable = false;
+        }
+
+        private void SwitchPresenter_CompactOverlay(object sender, RoutedEventArgs e)
         {
             ToggleButton toggleButton = sender as ToggleButton;
             if (((ToggleButton)sender).IsChecked == false)
             {
-                MyAppWindow.SetPresenter(AppWindowPresenterKind.Default);
+                CompactHeight = MyAppWindow.Size.Height;
+                CompactWidth = MyAppWindow.Size.Width;
+                DefaultPresenter();
                 toggleButton.Content = "\uEE49";
             }
             else
             {
-                MyAppWindow.SetPresenter(AppWindowPresenterKind.CompactOverlay);
+                DefaultHeight = MyAppWindow.Size.Height;
+                DefaultWidth = MyAppWindow.Size.Width;
+                CompactPresenter();
                 toggleButton.Content = "\uEE47";
-                MyAppWindow.Resize(new Windows.Graphics.SizeInt32 { Width = 600, Height = 600 });
+
             }
         }
 
+        // WIN32 THEMING
         private class ImportTheme
         {
             [DllImport("uxtheme.dll", EntryPoint = "#135", SetLastError = true, CharSet = CharSet.Unicode)]
@@ -126,14 +176,6 @@ namespace WinUI_Todo
             else
             {
                 SetWindowImmersiveDarkMode(WinHandle, false);
-            }
-        }
-
-        public void WindowClosed(object sender, WindowEventArgs e)
-        {
-            if (EventHandlersCreated)
-            {
-                StopListener();
             }
         }
     }
