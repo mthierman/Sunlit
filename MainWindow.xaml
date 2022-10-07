@@ -7,44 +7,21 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls">
-    <!--Closed="WindowClosed">-->
 
     <Grid>
-
         <Grid.RowDefinitions>
-            <!--<RowDefinition Height="48"/>-->
-            <!--<RowDefinition Height="32"/>-->
-            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <!-- TITLEBAR -->
-        <Grid
-            Grid.Row="0"
-            x:Name="AppTitleBar">
-            <!--<Image
-                Source="Assets/StoreLogo.png"
+        <Grid>
+            <!--<ToggleButton
+                Click="Test"
+                Content="&#xEE49;"
+                FontFamily="Segoe Fluent Icons"
                 HorizontalAlignment="Left"
-                Width="16"
-                Height="16"
-                Margin="8,0"/>
-            <TextBlock
-                x:Name="AppTitleTextBlock"
-                Text="{x:Bind Title}"
-                TextWrapping="NoWrap"
-                Style="{StaticResource CaptionTextBlockStyle}"
-                VerticalAlignment="Center"
-                Margin="28,0,0,0"/>-->
-        </Grid>
-
-        <!-- COMPACTOVERLAY -->
-        <Grid Grid.Row="1">
-            <!--<AutoSuggestBox
-                Width="200"
-                VerticalContentAlignment="Center"
-                QueryIcon="Find"
-                Margin="36,8"/>-->
+                Margin="8,8">
+            </ToggleButton>-->
 
             <ToggleButton
                 Click="SwitchPresenter_CompOverlay"
@@ -52,14 +29,11 @@
                 FontFamily="Segoe Fluent Icons"
                 HorizontalAlignment="Right"
                 Margin="8,8">
-                <!--<FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEE49;"/>-->
             </ToggleButton>
         </Grid>
 
-        <!-- WEBVIEW -->
-        <controls:WebView2 x:Name="MyWebView" Grid.Row="2"
+        <controls:WebView2 x:Name="MyWebView" Grid.Row="1"
         Source="https://localhost:8000/" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-
     </Grid>
 
 </Window>

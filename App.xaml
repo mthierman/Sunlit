@@ -10,10 +10,6 @@
                 <!-- Other merged dictionaries here -->
             </ResourceDictionary.MergedDictionaries>
             <!-- Other app resources here -->
-            <!--<SolidColorBrush x:Key="WindowCaptionBackground">Black</SolidColorBrush>
-            <SolidColorBrush x:Key="WindowCaptionBackgroundDisabled">Yellow</SolidColorBrush>
-            <SolidColorBrush x:Key="WindowCaptionForeground">Red</SolidColorBrush>
-            <SolidColorBrush x:Key="WindowCaptionForegroundDisabled">Pink</SolidColorBrush>-->
         </ResourceDictionary>
     </Application.Resources>
 </Application>

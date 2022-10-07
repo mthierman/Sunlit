@@ -1,24 +1,9 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Microsoft.UI.Xaml.Shapes;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.ApplicationModel;
-using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Microsoft.UI.Xaml;
 using Microsoft.Win32;
-using Windows.UI.Xaml;
-using System.Threading;
+using WinRT.Interop;
 
 namespace WinUI_Todo
 {
@@ -26,22 +11,59 @@ namespace WinUI_Todo
     {
         public App()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             Environment.SetEnvironmentVariable("WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", "--enable-features=OverlayScrollbar,msOverlayScrollbarWinStyle:scrollbar_mode/minimal_mode,msOverlayScrollbarWinStyleAnimation");
-            //Environment.SetEnvironmentVariable("WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", "--enable-features=OverlayScrollbar,msOverlayScrollbarWinStyle:scrollbar_mode/full_mode,msOverlayScrollbarWinStyleAnimation");
         }
 
-        protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+        protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
             m_window = new MainWindow();
             m_window.Activate();
-            //new Thread(RunMessagePump).Start();
+            Test.SetPreferredAppMode(PreferredAppMode.AllowDark);
         }
 
-        //void RunMessagePump()
+        //public static event Microsoft.Win32.UserPreferenceChangedEventHandler UserPreferenceChanged;
+        //public delegate void UserPreferenceChangedEventHandler(object sender, UserPreferenceChangedEventArgs e);
+
+        class Test
+        {
+            [DllImport("uxtheme.dll", EntryPoint = "#135", SetLastError = true, CharSet = CharSet.Unicode)]
+            public static extern int SetPreferredAppMode(PreferredAppMode preferredAppMode);
+
+        }
+
+        private enum PreferredAppMode
+        {
+            Default,
+            AllowDark,
+            ForceDark,
+            ForceLight,
+            Max
+        }
+
+        //class Test2
         //{
-        //    System.Diagnostics.Debug.WriteLine("Starting Message Pump!!!");
+        //    [DllImport("uxtheme.dll", EntryPoint = "#132", SetLastError = true, CharSet = CharSet.Unicode)]
+        //    public static extern bool ShouldAppsUseDarkMode(bool attr);
+        //};
+
+        //class Test3
+        //{
+        //    [DllImport("dwmapi.dll")]
+        //    private static extern int DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttr, ref int pvAttr, int cbAttr);
+        //};
+
+        //private enum DWMWINDOWATTRIBUTE
+        //{
+        //    DWMWA_USE_IMMERSIVE_DARK_MODE = 20
         //}
+
+        //private static void SetWindowImmersiveDarkMode(IntPtr hWnd, bool enabled)
+        //{
+        //    int isEnabled = enabled ? 1 : 0;
+        //    int result = DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref isEnabled, sizeof(int));
+        //    if (result != 0) throw new Win32Exception(result);
+        //};
 
         private Window m_window;
     }
