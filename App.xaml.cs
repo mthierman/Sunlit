@@ -3,6 +3,15 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using Microsoft.UI.Xaml;
 using WinRT.Interop;
+using System.Runtime;
+using Microsoft.UI;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.ViewManagement;
 
 namespace WinUI_Todo
@@ -12,8 +21,24 @@ namespace WinUI_Todo
         public App()
         {
             InitializeComponent();
+            _uiSettings.ColorValuesChanged += ColorValuesChanged;
             Environment.SetEnvironmentVariable("WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", "--enable-features=OverlayScrollbar,msOverlayScrollbarWinStyle:scrollbar_mode/minimal_mode,msOverlayScrollbarWinStyleAnimation");
         }
+
+        private readonly UISettings _uiSettings = new UISettings();
+
+        private void ColorValuesChanged(UISettings sender, object args)
+        {
+            System.Diagnostics.Debug.WriteLine("CHANGES");
+        }
+
+        //public void TestColor()
+        //{
+        //    var uiSettings = new Windows.UI.ViewManagement.UISettings();
+        //    uiSettings.ColorValuesChanged += ColorValuesChanged;
+        //    var color = uiSettings.GetColorValue(Windows.UI.ViewManagement.UIColorType.Background);
+        //    System.Diagnostics.Debug.WriteLine(color);
+        //}
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
