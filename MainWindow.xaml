@@ -15,14 +15,6 @@
         </Grid.RowDefinitions>
 
         <Grid>
-            <!--<ToggleButton
-                Click="Test"
-                Content="&#xEE49;"
-                FontFamily="Segoe Fluent Icons"
-                HorizontalAlignment="Left"
-                Margin="8,8">
-            </ToggleButton>-->
-
             <ToggleButton
                 Click="SwitchPresenter_CompOverlay"
                 Content="&#xEE49;"
