@@ -2,8 +2,8 @@
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using Microsoft.UI.Xaml;
-using Microsoft.Win32;
 using WinRT.Interop;
+using Windows.UI.ViewManagement;
 
 namespace WinUI_Todo
 {
@@ -19,27 +19,27 @@ namespace WinUI_Todo
         {
             m_window = new MainWindow();
             m_window.Activate();
-            Test.SetPreferredAppMode(PreferredAppMode.AllowDark);
+            //Test.SetPreferredAppMode(PreferredAppMode.AllowDark);
         }
 
         //public static event Microsoft.Win32.UserPreferenceChangedEventHandler UserPreferenceChanged;
         //public delegate void UserPreferenceChangedEventHandler(object sender, UserPreferenceChangedEventArgs e);
 
-        class Test
-        {
-            [DllImport("uxtheme.dll", EntryPoint = "#135", SetLastError = true, CharSet = CharSet.Unicode)]
-            public static extern int SetPreferredAppMode(PreferredAppMode preferredAppMode);
+        //class Test
+        //{
+        //    [DllImport("uxtheme.dll", EntryPoint = "#135", SetLastError = true, CharSet = CharSet.Unicode)]
+        //    public static extern int SetPreferredAppMode(PreferredAppMode preferredAppMode);
 
-        }
+        //}
 
-        private enum PreferredAppMode
-        {
-            Default,
-            AllowDark,
-            ForceDark,
-            ForceLight,
-            Max
-        }
+        //private enum PreferredAppMode
+        //{
+        //    Default,
+        //    AllowDark,
+        //    ForceDark,
+        //    ForceLight,
+        //    Max
+        //}
 
         //class Test2
         //{
