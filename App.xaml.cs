@@ -17,12 +17,6 @@ namespace WinUI_Todo
             m_window.Activate();
         }
 
-        //public enum BackdropType
-        //{
-        //    Mica,
-        //    MicaAlt
-        //}
-
         private Window m_window;
     }
 }

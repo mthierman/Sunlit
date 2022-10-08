@@ -15,18 +15,51 @@ namespace WinUI_Todo
     {
         public MainWindow()
         {
+            MyAppWindow.SetIcon("Assets/logo.ico");
             Title = "Todo";
             InitializeComponent();
             InitialTheme();
             DefaultPresenter();
+            ActivateListener();
             //TrySetMicaBackdrop();
             TrySetAcrylicBackdrop();
+
+            //MyAppWindow.TitleBar.IconShowOptions = IconShowOptions.HideIconAndSystemMenu;
         }
 
-        // ACTIVATION AND CLOSING
+        // LISTENER
+        private readonly UISettings _uiSettings = new();
+
+        private void WindowThemeChanged(FrameworkElement sender, object args)
+        {
+            if (m_configurationSource != null)
+            {
+                SetConfigurationSourceTheme();
+            }
+            var color = _uiSettings.GetColorValue(UIColorType.Background);
+            if (color.ToString() == "#FF000000")
+            {
+                SetWindowImmersiveDarkMode(WinHandle, true);
+            }
+            else
+            {
+                SetWindowImmersiveDarkMode(WinHandle, false);
+            }
+        }
+
+        private void ActivateListener()
+        {
+            this.Activated += WindowActivated;
+            this.Closed += WindowClosed;
+            ((FrameworkElement)this.Content).ActualThemeChanged += WindowThemeChanged;
+        }
+
         private void WindowActivated(object sender, WindowActivatedEventArgs e)
         {
-            m_configurationSource.IsInputActive = e.WindowActivationState != WindowActivationState.Deactivated;
+            if (m_configurationSource != null)
+            {
+                m_configurationSource.IsInputActive = e.WindowActivationState != WindowActivationState.Deactivated;
+            }
         }
 
         public void WindowClosed(object sender, WindowEventArgs e)
@@ -42,6 +75,8 @@ namespace WinUI_Todo
                 m_micaController = null;
             }
             this.Activated -= WindowActivated;
+            this.Closed -= WindowClosed;
+            ((FrameworkElement)this.Content).ActualThemeChanged -= WindowThemeChanged;
             m_configurationSource = null;
         }
 
@@ -83,7 +118,6 @@ namespace WinUI_Todo
             {
                 if (Windows.System.DispatcherQueue.GetForCurrentThread() != null)
                 {
-                    // one already exists, so we'll just use it.
                     return;
                 }
 
@@ -91,15 +125,15 @@ namespace WinUI_Todo
                 {
                     DispatcherQueueOptions options;
                     options.dwSize = Marshal.SizeOf(typeof(DispatcherQueueOptions));
-                    options.threadType = 2;    // DQTYPE_THREAD_CURRENT
-                    options.apartmentType = 2; // DQTAT_COM_STA
+                    options.threadType = 2;
+                    options.apartmentType = 2;
 
                     CreateDispatcherQueueController(options, ref m_dispatcherQueueController);
                 }
             }
         }
 
-        WindowsSystemDispatcherQueueHelper m_wsdqHelper; // See separate sample below for implementation
+        WindowsSystemDispatcherQueueHelper m_wsdqHelper;
         Microsoft.UI.Composition.SystemBackdrops.MicaController m_micaController;
         Microsoft.UI.Composition.SystemBackdrops.DesktopAcrylicController m_acrylicController;
         Microsoft.UI.Composition.SystemBackdrops.SystemBackdropConfiguration m_configurationSource;
@@ -111,25 +145,23 @@ namespace WinUI_Todo
                 m_wsdqHelper = new WindowsSystemDispatcherQueueHelper();
                 m_wsdqHelper.EnsureWindowsSystemDispatcherQueueController();
 
-                // Hooking up the policy object
                 m_configurationSource = new Microsoft.UI.Composition.SystemBackdrops.SystemBackdropConfiguration();
-                this.Activated += WindowActivated;
-                this.Closed += WindowClosed;
-                ((FrameworkElement)this.Content).ActualThemeChanged += WindowThemeChanged;
+                //this.Activated += WindowActivated;
+                //this.Closed += WindowClosed;
+                //((FrameworkElement)this.Content).ActualThemeChanged += WindowThemeChanged;
 
-                // Initial configuration state.
                 m_configurationSource.IsInputActive = true;
                 SetConfigurationSourceTheme();
 
                 m_micaController = new Microsoft.UI.Composition.SystemBackdrops.MicaController();
+                m_micaController.Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.Base;
+                //m_micaController.Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.BaseAlt;
 
-                // Enable the system backdrop.
-                // Note: Be sure to have "using WinRT;" to support the Window.As<...>() call.
                 m_micaController.AddSystemBackdropTarget(this.As<Microsoft.UI.Composition.ICompositionSupportsSystemBackdrop>());
                 m_micaController.SetSystemBackdropConfiguration(m_configurationSource);
-                return true; // succeeded
+                return true;
             }
-            return false; // Mica is not supported on this system
+            return false;
         }
 
         bool TrySetAcrylicBackdrop()
@@ -139,45 +171,22 @@ namespace WinUI_Todo
                 m_wsdqHelper = new WindowsSystemDispatcherQueueHelper();
                 m_wsdqHelper.EnsureWindowsSystemDispatcherQueueController();
 
-                // Hooking up the policy object
                 m_configurationSource = new Microsoft.UI.Composition.SystemBackdrops.SystemBackdropConfiguration();
-                this.Activated += WindowActivated;
-                this.Closed += WindowClosed;
-                ((FrameworkElement)this.Content).ActualThemeChanged += WindowThemeChanged;
+                //this.Activated += WindowActivated;
+                //this.Closed += WindowClosed;
+                //((FrameworkElement)this.Content).ActualThemeChanged += WindowThemeChanged;
 
-                // Initial configuration state.
                 m_configurationSource.IsInputActive = true;
                 SetConfigurationSourceTheme();
 
                 m_acrylicController = new Microsoft.UI.Composition.SystemBackdrops.DesktopAcrylicController();
 
-                // Enable the system backdrop.
-                // Note: Be sure to have "using WinRT;" to support the Window.As<...>() call.
                 m_acrylicController.AddSystemBackdropTarget(this.As<Microsoft.UI.Composition.ICompositionSupportsSystemBackdrop>());
                 m_acrylicController.SetSystemBackdropConfiguration(m_configurationSource);
-                return true; // succeeded
+                return true;
             }
 
-            return false; // Acrylic is not supported on this system
-        }
-
-        private readonly UISettings _uiSettings = new();
-
-        private void WindowThemeChanged(FrameworkElement sender, object args)
-        {
-            if (m_configurationSource != null)
-            {
-                SetConfigurationSourceTheme();
-            }
-            var color = _uiSettings.GetColorValue(UIColorType.Background);
-            if (color.ToString() == "#FF000000")
-            {
-                SetWindowImmersiveDarkMode(WinHandle, true);
-            }
-            else
-            {
-                SetWindowImmersiveDarkMode(WinHandle, false);
-            }
+            return false;
         }
 
         private void SetConfigurationSourceTheme()
