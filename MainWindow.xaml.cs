@@ -19,6 +19,7 @@ namespace WinUI_Todo
             InitializeComponent();
             InitialTheme();
             DefaultPresenter();
+            TrySetMicaBackdrop();
         }
 
         // ACTIVATION AND CLOSING
@@ -58,7 +59,7 @@ namespace WinUI_Todo
         }
 
         // ACRYLIC
-        class WindowsSystemDispatcherQueueHelper
+        public class WindowsSystemDispatcherQueueHelper
         {
             [StructLayout(LayoutKind.Sequential)]
             struct DispatcherQueueOptions

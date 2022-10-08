@@ -15,7 +15,6 @@ namespace WinUI_Todo
         {
             m_window = new MainWindow();
             m_window.Activate();
-            m_window.TrySetMicaBackdrop();
         }
 
         //public enum BackdropType

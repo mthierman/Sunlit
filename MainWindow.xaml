@@ -8,7 +8,9 @@
     mc:Ignorable="d"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls">
 
-    <Grid>
+    <Grid
+        Background="Transparent"
+        Opacity="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
@@ -16,6 +18,8 @@
 
         <Grid>
             <ToggleButton
+                Background="Transparent"
+                Opacity="0"
                 Click="SwitchPresenter_CompactOverlay"
                 Content="&#xEE49;"
                 FontFamily="Segoe Fluent Icons"
@@ -24,8 +28,8 @@
             </ToggleButton>
         </Grid>
 
-        <controls:WebView2 x:Name="MyWebView" Grid.Row="1"
-        Source="https://localhost:8000/" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <!--<controls:WebView2 x:Name="MyWebView" Grid.Row="1"
+        Source="https://localhost:8000/" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>-->
     </Grid>
 
 </Window>
