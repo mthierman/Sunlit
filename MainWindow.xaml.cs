@@ -13,48 +13,15 @@ namespace WinUI_Todo
 {
     public sealed partial class MainWindow : Window
     {
-        // MAIN WINDOW
         public MainWindow()
         {
-            _ = ImportTheme.SetPreferredAppMode(PreferredAppMode.AllowDark);
-
-            if (Application.Current.RequestedTheme == ApplicationTheme.Dark)
-            {
-                SetWindowImmersiveDarkMode(WinHandle, true);
-            }
-            else
-            {
-                SetWindowImmersiveDarkMode(WinHandle, false);
-            }
-
             Title = "Todo";
-
-            DefaultPresenter();
-
             InitializeComponent();
-
-            //StartListener();
-
-            TrySetMicaBackdrop();
+            InitialTheme();
+            DefaultPresenter();
         }
 
-        // LISTENER
-        private readonly UISettings _uiSettings = new();
-
-        //private bool EventHandlersCreated;
-
-        //private void StartListener()
-        //{
-        //    EventHandlersCreated = true;
-        //    _uiSettings.ColorValuesChanged += ColorValuesChanged;
-        //}
-
-        //private void StopListener()
-        //{
-        //    EventHandlersCreated = false;
-        //    _uiSettings.ColorValuesChanged -= ColorValuesChanged;
-        //}
-
+        // ACTIVATION AND CLOSING
         private void WindowActivated(object sender, WindowActivatedEventArgs e)
         {
             m_configurationSource.IsInputActive = e.WindowActivationState != WindowActivationState.Deactivated;
@@ -62,8 +29,6 @@ namespace WinUI_Todo
 
         public void WindowClosed(object sender, WindowEventArgs e)
         {
-            //if (EventHandlersCreated)
-            //{ StopListener(); }
             if (m_micaController != null)
             {
                 m_micaController.Dispose();
@@ -73,7 +38,7 @@ namespace WinUI_Todo
             m_configurationSource = null;
         }
 
-        // APP WINDOW
+        // APP WINDOW ID
         private IntPtr WinHandle
         {
             get
@@ -156,9 +121,10 @@ namespace WinUI_Todo
                 m_micaController.SetSystemBackdropConfiguration(m_configurationSource);
                 return true; // succeeded
             }
-
             return false; // Mica is not supported on this system
         }
+
+        private readonly UISettings _uiSettings = new();
 
         private void WindowThemeChanged(FrameworkElement sender, object args)
         {
@@ -190,10 +156,8 @@ namespace WinUI_Todo
         // COMPACT OVERLAY
         private OverlappedPresenter MyDefaultPresenter;
         private OverlappedPresenter MyCompactPresenter;
-
         public int DefaultWidth { get; set; } = 600;
         public int DefaultHeight { get; set; } = 600;
-
         public int CompactWidth { get; set; } = 400;
         public int CompactHeight { get; set; } = 400;
 
@@ -238,16 +202,23 @@ namespace WinUI_Todo
         }
 
         // WIN32 THEMING
+        private void InitialTheme()
+        {
+            _ = ImportTheme.SetPreferredAppMode(PreferredAppMode.AllowDark);
+            if (Application.Current.RequestedTheme == ApplicationTheme.Dark)
+            {
+                SetWindowImmersiveDarkMode(WinHandle, true);
+            }
+            else
+            {
+                SetWindowImmersiveDarkMode(WinHandle, false);
+            }
+        }
+
         private class ImportTheme
         {
             [DllImport("uxtheme.dll", EntryPoint = "#135", SetLastError = true, CharSet = CharSet.Unicode)]
             public static extern int SetPreferredAppMode(PreferredAppMode preferredAppMode);
-        }
-
-        private class ImportWindow
-        {
-            [DllImport("dwmapi.dll")]
-            public static extern int DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttr, ref int pvAttr, int cbAttr);
         }
 
         private enum PreferredAppMode
@@ -257,6 +228,12 @@ namespace WinUI_Todo
             ForceDark,
             ForceLight,
             Max
+        }
+
+        private class ImportWindow
+        {
+            [DllImport("dwmapi.dll")]
+            public static extern int DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttr, ref int pvAttr, int cbAttr);
         }
 
         private enum DWMWINDOWATTRIBUTE
@@ -270,18 +247,5 @@ namespace WinUI_Todo
             int result = ImportWindow.DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref isEnabled, sizeof(int));
             if (result != 0) throw new Win32Exception(result);
         }
-
-        //private void ColorValuesChanged(UISettings sender, object args)
-        //{
-        //    var color = _uiSettings.GetColorValue(UIColorType.Background);
-        //    if (color.ToString() == "#FF000000")
-        //    {
-        //        SetWindowImmersiveDarkMode(WinHandle, true);
-        //    }
-        //    else
-        //    {
-        //        SetWindowImmersiveDarkMode(WinHandle, false);
-        //    }
-        //}
     }
 }
