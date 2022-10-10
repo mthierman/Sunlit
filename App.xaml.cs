@@ -1,22 +1,20 @@
 ﻿using Microsoft.UI.Xaml;
-using System;
 
-namespace WinUI_Todo
+namespace Todo;
+
+public partial class App : Application
 {
-    public partial class App : Application
+    public App()
     {
-        public App()
-        {
-            InitializeComponent();
-            Environment.SetEnvironmentVariable("WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", "--enable-features=OverlayScrollbar,msOverlayScrollbarWinStyle:scrollbar_mode/minimal_mode,msOverlayScrollbarWinStyleAnimation");
-        }
-
-        protected override void OnLaunched(LaunchActivatedEventArgs args)
-        {
-            m_window = new MainWindow();
-            m_window.Activate();
-        }
-
-        private Window m_window;
+        WebViewEnv();
+        InitializeComponent();
     }
+
+    protected override void OnLaunched(LaunchActivatedEventArgs args)
+    {
+        _myAppWindow = new MainWindow();
+        _myAppWindow.Activate();
+    }
+
+    private Window _myAppWindow;
 }
