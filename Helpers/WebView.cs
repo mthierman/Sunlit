@@ -1,11 +1,10 @@
-﻿using Microsoft.UI.Xaml;
-using System;
+﻿using System;
 
 namespace Todo;
 
-public partial class App : Application
+public class WebView
 {
-    private void WebViewEnv()
+    public static void WebViewEnv()
     {
         //Environment.SetEnvironmentVariable("WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", "--enable-features=OverlayScrollbar,msOverlayScrollbarWinStyle:scrollbar_mode/minimal_mode,msOverlayScrollbarWinStyleAnimation");
         Environment.SetEnvironmentVariable("WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", "--enable-features=OverlayScrollbar,msOverlayScrollbarWinStyle:scrollbar_mode/full_mode,msOverlayScrollbarWinStyleAnimation");

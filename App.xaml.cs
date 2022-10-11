@@ -6,7 +6,7 @@ public partial class App : Application
 {
     public App()
     {
-        WebViewEnv();
+        WebView.WebViewEnv();
         InitializeComponent();
     }
 
@@ -14,6 +14,8 @@ public partial class App : Application
     {
         _myAppWindow = new MainWindow();
         _myAppWindow.Activate();
+        //SaveTestSetting();
+        //LoadTestSetting();
     }
 
     private Window _myAppWindow;
