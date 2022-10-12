@@ -4,9 +4,9 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Windows.UI.ViewManagement;
-using WinRT;
 using WinRT.Interop;
 
 namespace Todo;
@@ -15,13 +15,65 @@ public sealed partial class MainWindow : Window
 {
     private void InitTheme()
     {
-        Title = "Todo";
-        MyAppWindow.SetIcon("Assets/logo.ico");
         InitialTheme();
         DefaultPresenter();
         ActivateListeners();
         TrySetMicaBackdrop();
         //TrySetAcrylicBackdrop();
+
+        Settings.LoadWindow();
+        Debug.Print(Settings.ToString());
+        Debug.Print(Setting.DefaultWidth.ToString());
+        Debug.Print(Setting.DefaultHeight.ToString());
+        Debug.Print(Setting.CompactWidth.ToString());
+        Debug.Print(Setting.DefaultHeight.ToString());
+    }
+
+    // COMPACT OVERLAY
+    private OverlappedPresenter MyDefaultPresenter;
+    private OverlappedPresenter MyCompactPresenter;
+
+    Setting Setting = new Setting();
+    Settings Settings = new Settings();
+
+    private void DefaultPresenter()
+    {
+        MyAppWindow.SetPresenter(AppWindowPresenterKind.Default);
+        MyDefaultPresenter = MyAppWindow.Presenter as OverlappedPresenter;
+        MyAppWindow.Resize(new Windows.Graphics.SizeInt32 { Width = Setting.DefaultWidth, Height = Setting.DefaultHeight });
+        MyDefaultPresenter.IsAlwaysOnTop = false;
+        MyDefaultPresenter.IsMaximizable = true;
+        MyDefaultPresenter.IsMinimizable = true;
+    }
+
+    private void CompactPresenter()
+    {
+        MyAppWindow.SetPresenter(AppWindowPresenterKind.Overlapped);
+        MyCompactPresenter = MyAppWindow.Presenter as OverlappedPresenter;
+        MyAppWindow.Resize(new Windows.Graphics.SizeInt32 { Width = Setting.CompactWidth, Height = Setting.CompactHeight });
+        MyCompactPresenter.IsAlwaysOnTop = true;
+        MyCompactPresenter.IsMaximizable = false;
+        MyCompactPresenter.IsMinimizable = false;
+    }
+
+    private void SwitchPresenter_CompactOverlay(object sender, RoutedEventArgs e)
+    {
+        ToggleButton toggleButton = sender as ToggleButton;
+        if (((ToggleButton)sender).IsChecked == false)
+        {
+            Setting.CompactWidth = MyAppWindow.Size.Width;
+            Setting.CompactHeight = MyAppWindow.Size.Height;
+            DefaultPresenter();
+            toggleButton.Content = "\uEE49";
+        }
+        else
+        {
+            Setting.DefaultWidth = MyAppWindow.Size.Width;
+            Setting.DefaultHeight = MyAppWindow.Size.Height;
+            CompactPresenter();
+            toggleButton.Content = "\uEE47";
+
+        }
     }
 
     // LISTENER
@@ -75,6 +127,7 @@ public sealed partial class MainWindow : Window
         this.Closed -= WindowClosed;
         ((FrameworkElement)this.Content).ActualThemeChanged -= WindowThemeChanged;
         m_configurationSource = null;
+        Settings.SaveWindow(Setting.DefaultWidth, Setting.DefaultHeight, Setting.CompactWidth, Setting.CompactHeight);
     }
 
     // APP WINDOW ID
@@ -97,135 +150,87 @@ public sealed partial class MainWindow : Window
     }
 
     // ACRYLIC
-    private WindowsSystemDispatcherQueueHelper m_wsdqHelper;
-    private Microsoft.UI.Composition.SystemBackdrops.MicaController m_micaController;
-    private Microsoft.UI.Composition.SystemBackdrops.DesktopAcrylicController m_acrylicController;
-    private Microsoft.UI.Composition.SystemBackdrops.SystemBackdropConfiguration m_configurationSource;
+    //private WindowsSystemDispatcherQueueHelper m_wsdqHelper;
+    //private Microsoft.UI.Composition.SystemBackdrops.MicaController m_micaController;
+    //private Microsoft.UI.Composition.SystemBackdrops.DesktopAcrylicController m_acrylicController;
+    //private Microsoft.UI.Composition.SystemBackdrops.SystemBackdropConfiguration m_configurationSource;
 
-    private class WindowsSystemDispatcherQueueHelper
-    {
-        [StructLayout(LayoutKind.Sequential)]
-        struct DispatcherQueueOptions
-        {
-            internal int dwSize;
-            internal int threadType;
-            internal int apartmentType;
-        }
+    //private class WindowsSystemDispatcherQueueHelper
+    //{
+    //    [StructLayout(LayoutKind.Sequential)]
+    //    struct DispatcherQueueOptions
+    //    {
+    //        internal int dwSize;
+    //        internal int threadType;
+    //        internal int apartmentType;
+    //    }
 
-        [DllImport("CoreMessaging.dll")]
-        private static extern int CreateDispatcherQueueController([In] DispatcherQueueOptions options, [In, Out, MarshalAs(UnmanagedType.IUnknown)] ref object dispatcherQueueController);
-        object m_dispatcherQueueController = null;
-        public void EnsureWindowsSystemDispatcherQueueController()
-        {
-            if (Windows.System.DispatcherQueue.GetForCurrentThread() != null)
-            {
-                return;
-            }
+    //    [DllImport("CoreMessaging.dll")]
+    //    private static extern int CreateDispatcherQueueController([In] DispatcherQueueOptions options, [In, Out, MarshalAs(UnmanagedType.IUnknown)] ref object dispatcherQueueController);
+    //    object m_dispatcherQueueController = null;
+    //    public void EnsureWindowsSystemDispatcherQueueController()
+    //    {
+    //        if (Windows.System.DispatcherQueue.GetForCurrentThread() != null)
+    //        {
+    //            return;
+    //        }
 
-            if (m_dispatcherQueueController == null)
-            {
-                DispatcherQueueOptions options;
-                options.dwSize = Marshal.SizeOf(typeof(DispatcherQueueOptions));
-                options.threadType = 2;
-                options.apartmentType = 2;
-                CreateDispatcherQueueController(options, ref m_dispatcherQueueController);
-            }
-        }
-    }
+    //        if (m_dispatcherQueueController == null)
+    //        {
+    //            DispatcherQueueOptions options;
+    //            options.dwSize = Marshal.SizeOf(typeof(DispatcherQueueOptions));
+    //            options.threadType = 2;
+    //            options.apartmentType = 2;
+    //            CreateDispatcherQueueController(options, ref m_dispatcherQueueController);
+    //        }
+    //    }
+    //}
 
-    bool TrySetMicaBackdrop()
-    {
-        if (Microsoft.UI.Composition.SystemBackdrops.MicaController.IsSupported())
-        {
-            m_wsdqHelper = new WindowsSystemDispatcherQueueHelper();
-            m_wsdqHelper.EnsureWindowsSystemDispatcherQueueController();
-            m_configurationSource = new Microsoft.UI.Composition.SystemBackdrops.SystemBackdropConfiguration();
-            m_configurationSource.IsInputActive = true;
-            SetConfigurationSourceTheme();
-            m_micaController = new Microsoft.UI.Composition.SystemBackdrops.MicaController();
-            m_micaController.Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.Base;
-            //m_micaController.Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.BaseAlt;
-            m_micaController.AddSystemBackdropTarget(this.As<Microsoft.UI.Composition.ICompositionSupportsSystemBackdrop>());
-            m_micaController.SetSystemBackdropConfiguration(m_configurationSource);
-            return true;
-        }
-        return false;
-    }
+    //bool TrySetMicaBackdrop()
+    //{
+    //    if (Microsoft.UI.Composition.SystemBackdrops.MicaController.IsSupported())
+    //    {
+    //        m_wsdqHelper = new WindowsSystemDispatcherQueueHelper();
+    //        m_wsdqHelper.EnsureWindowsSystemDispatcherQueueController();
+    //        m_configurationSource = new Microsoft.UI.Composition.SystemBackdrops.SystemBackdropConfiguration();
+    //        m_configurationSource.IsInputActive = true;
+    //        SetConfigurationSourceTheme();
+    //        m_micaController = new Microsoft.UI.Composition.SystemBackdrops.MicaController();
+    //        m_micaController.Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.Base;
+    //        //m_micaController.Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.BaseAlt;
+    //        m_micaController.AddSystemBackdropTarget(this.As<Microsoft.UI.Composition.ICompositionSupportsSystemBackdrop>());
+    //        m_micaController.SetSystemBackdropConfiguration(m_configurationSource);
+    //        return true;
+    //    }
+    //    return false;
+    //}
 
-    bool TrySetAcrylicBackdrop()
-    {
-        if (Microsoft.UI.Composition.SystemBackdrops.DesktopAcrylicController.IsSupported())
-        {
-            m_wsdqHelper = new WindowsSystemDispatcherQueueHelper();
-            m_wsdqHelper.EnsureWindowsSystemDispatcherQueueController();
-            m_configurationSource = new Microsoft.UI.Composition.SystemBackdrops.SystemBackdropConfiguration();
-            m_configurationSource.IsInputActive = true;
-            SetConfigurationSourceTheme();
-            m_acrylicController = new Microsoft.UI.Composition.SystemBackdrops.DesktopAcrylicController();
-            m_acrylicController.AddSystemBackdropTarget(this.As<Microsoft.UI.Composition.ICompositionSupportsSystemBackdrop>());
-            m_acrylicController.SetSystemBackdropConfiguration(m_configurationSource);
-            return true;
-        }
-        return false;
-    }
+    //bool TrySetAcrylicBackdrop()
+    //{
+    //    if (Microsoft.UI.Composition.SystemBackdrops.DesktopAcrylicController.IsSupported())
+    //    {
+    //        m_wsdqHelper = new WindowsSystemDispatcherQueueHelper();
+    //        m_wsdqHelper.EnsureWindowsSystemDispatcherQueueController();
+    //        m_configurationSource = new Microsoft.UI.Composition.SystemBackdrops.SystemBackdropConfiguration();
+    //        m_configurationSource.IsInputActive = true;
+    //        SetConfigurationSourceTheme();
+    //        m_acrylicController = new Microsoft.UI.Composition.SystemBackdrops.DesktopAcrylicController();
+    //        m_acrylicController.AddSystemBackdropTarget(this.As<Microsoft.UI.Composition.ICompositionSupportsSystemBackdrop>());
+    //        m_acrylicController.SetSystemBackdropConfiguration(m_configurationSource);
+    //        return true;
+    //    }
+    //    return false;
+    //}
 
-    private void SetConfigurationSourceTheme()
-    {
-        switch (((FrameworkElement)this.Content).ActualTheme)
-        {
-            case ElementTheme.Dark: m_configurationSource.Theme = Microsoft.UI.Composition.SystemBackdrops.SystemBackdropTheme.Dark; break;
-            case ElementTheme.Light: m_configurationSource.Theme = Microsoft.UI.Composition.SystemBackdrops.SystemBackdropTheme.Light; break;
-            case ElementTheme.Default: m_configurationSource.Theme = Microsoft.UI.Composition.SystemBackdrops.SystemBackdropTheme.Default; break;
-        }
-    }
-
-    // COMPACT OVERLAY
-    private OverlappedPresenter MyDefaultPresenter;
-    private OverlappedPresenter MyCompactPresenter;
-    private int DefaultWidth { get; set; } = 600;
-    private int DefaultHeight { get; set; } = 600;
-    private int CompactWidth { get; set; } = 400;
-    private int CompactHeight { get; set; } = 400;
-
-    private void DefaultPresenter()
-    {
-        MyAppWindow.SetPresenter(AppWindowPresenterKind.Default);
-        MyDefaultPresenter = MyAppWindow.Presenter as OverlappedPresenter;
-        MyAppWindow.Resize(new Windows.Graphics.SizeInt32 { Width = DefaultWidth, Height = DefaultHeight });
-        MyDefaultPresenter.IsAlwaysOnTop = false;
-        MyDefaultPresenter.IsMaximizable = true;
-        MyDefaultPresenter.IsMinimizable = true;
-    }
-
-    private void CompactPresenter()
-    {
-        MyAppWindow.SetPresenter(AppWindowPresenterKind.Overlapped);
-        MyCompactPresenter = MyAppWindow.Presenter as OverlappedPresenter;
-        MyAppWindow.Resize(new Windows.Graphics.SizeInt32 { Width = CompactWidth, Height = CompactHeight });
-        MyCompactPresenter.IsAlwaysOnTop = true;
-        MyCompactPresenter.IsMaximizable = false;
-        MyCompactPresenter.IsMinimizable = false;
-    }
-
-    private void SwitchPresenter_CompactOverlay(object sender, RoutedEventArgs e)
-    {
-        ToggleButton toggleButton = sender as ToggleButton;
-        if (((ToggleButton)sender).IsChecked == false)
-        {
-            CompactHeight = MyAppWindow.Size.Height;
-            CompactWidth = MyAppWindow.Size.Width;
-            DefaultPresenter();
-            toggleButton.Content = "\uEE49";
-        }
-        else
-        {
-            DefaultHeight = MyAppWindow.Size.Height;
-            DefaultWidth = MyAppWindow.Size.Width;
-            CompactPresenter();
-            toggleButton.Content = "\uEE47";
-
-        }
-    }
+    //private void SetConfigurationSourceTheme()
+    //{
+    //    switch (((FrameworkElement)Content).ActualTheme)
+    //    {
+    //        case ElementTheme.Dark: m_configurationSource.Theme = Microsoft.UI.Composition.SystemBackdrops.SystemBackdropTheme.Dark; break;
+    //        case ElementTheme.Light: m_configurationSource.Theme = Microsoft.UI.Composition.SystemBackdrops.SystemBackdropTheme.Light; break;
+    //        case ElementTheme.Default: m_configurationSource.Theme = Microsoft.UI.Composition.SystemBackdrops.SystemBackdropTheme.Default; break;
+    //    }
+    //}
 
     // WIN32 THEMING
     private void InitialTheme()

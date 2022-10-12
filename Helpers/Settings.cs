@@ -8,11 +8,14 @@ namespace Todo;
 [XmlRoot(Namespace = "todo",
     ElementName = "Settings",
     DataType = "string",
-    IsNullable = false)]
+    IsNullable = true)]
 
 public class Setting
 {
-    public string test;
+    public int DefaultWidth;
+    public int DefaultHeight;
+    public int CompactWidth;
+    public int CompactHeight;
 }
 
 public class Settings
@@ -43,27 +46,31 @@ public class Settings
         Debug.Print("Settings file: {0}", Filename);
     }
 
-    public void Save()
+    public void Check()
     {
         if (!Directory.Exists(AppData))
-        {
-            Directory.CreateDirectory(AppData);
-        };
-        StreamWriter writer = new StreamWriter(Filename);
-        XmlSerializer serializer = new XmlSerializer(typeof(Setting));
+        { Directory.CreateDirectory(AppData); };
+    }
 
+    public void SaveWindow(int DefaultWidth, int DefaultHeight, int CompactWidth, int CompactHeight)
+    {
+        XmlSerializer serializer = new XmlSerializer(typeof(Setting));
+        StreamWriter writer = new StreamWriter(Filename);
         Setting Setting = new Setting();
-        Setting.test = "test";
+        Setting.DefaultWidth = DefaultWidth;
+        Setting.DefaultHeight = DefaultHeight;
+        Setting.CompactWidth = CompactWidth;
+        Setting.CompactHeight = CompactWidth;
         serializer.Serialize(writer, Setting);
         writer.Close();
     }
 
-    public void Load()
+    public void LoadWindow()
     {
         XmlSerializer serializer = new XmlSerializer(typeof(Setting));
         FileStream fs = new FileStream(Filename, FileMode.Open);
         Setting Setting;
         Setting = (Setting)serializer.Deserialize(fs);
-        Debug.Print(Setting.test);
+        fs.Close();
     }
 }

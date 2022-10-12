@@ -13,9 +13,9 @@ public partial class App : Application
     {
         WebView.WebViewEnv();
         InitializeComponent();
-        Settings.Print();
-        Settings.Save();
-        Settings.Load();
+        //Settings.Print();
+        //Settings.Save();
+        //Settings.Load();
     }
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
