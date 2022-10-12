@@ -2,7 +2,7 @@
 
 namespace Todo;
 
-public class WebView
+static class WebView
 {
     public static void WebViewEnv()
     {
