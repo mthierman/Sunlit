@@ -6,6 +6,7 @@ namespace Todo;
 public sealed partial class MainWindow : Window
 {
     private readonly UISettings _uiSettings = new();
+    Settings _settings = new Settings();
 
     private void WindowThemeChanged(FrameworkElement sender, object args)
     {
@@ -16,11 +17,25 @@ public sealed partial class MainWindow : Window
         var color = _uiSettings.GetColorValue(UIColorType.Background);
         if (color.ToString() == "#FF000000")
         {
-            Win32.SetWindowImmersiveDarkMode(WinHandle, true);
+            Win32.SetWindowImmersiveDarkMode(hWnd, true);
         }
         else
         {
-            Win32.SetWindowImmersiveDarkMode(WinHandle, false);
+            Win32.SetWindowImmersiveDarkMode(hWnd, false);
+        }
+    }
+
+    private void WindowSizeChanged(object sender, WindowSizeChangedEventArgs e)
+    {
+        if (_presenter._setting.PresenterType == "Compact")
+        {
+            _presenter._setting.CompactWidth = appWindow.Size.Width;
+            _presenter._setting.CompactHeight = appWindow.Size.Height;
+        }
+        else
+        {
+            _presenter._setting.DefaultWidth = appWindow.Size.Width;
+            _presenter._setting.DefaultHeight = appWindow.Size.Height;
         }
     }
 
@@ -28,6 +43,7 @@ public sealed partial class MainWindow : Window
     {
         this.Activated += WindowActivated;
         this.Closed += WindowClosed;
+        this.SizeChanged += WindowSizeChanged;
         ((FrameworkElement)this.Content).ActualThemeChanged += WindowThemeChanged;
     }
 
@@ -53,8 +69,9 @@ public sealed partial class MainWindow : Window
         }
         this.Activated -= WindowActivated;
         this.Closed -= WindowClosed;
+        this.SizeChanged -= WindowSizeChanged;
         ((FrameworkElement)this.Content).ActualThemeChanged -= WindowThemeChanged;
         m_configurationSource = null;
-        //Settings.SaveWindow(Setting.DefaultWidth, Setting.DefaultHeight, Setting.CompactWidth, Setting.CompactHeight);
+        _settings.SaveWindow(_presenter._setting);
     }
 }

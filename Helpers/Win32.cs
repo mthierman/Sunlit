@@ -7,16 +7,16 @@ namespace Todo;
 
 public class Win32
 {
-    public void Initialize(IntPtr winhandle)
+    public void Initialize(IntPtr hWnd)
     {
         _ = ImportTheme.SetPreferredAppMode(PreferredAppMode.AllowDark);
         if (Application.Current.RequestedTheme == ApplicationTheme.Dark)
         {
-            SetWindowImmersiveDarkMode(winhandle, true);
+            SetWindowImmersiveDarkMode(hWnd, true);
         }
         else
         {
-            SetWindowImmersiveDarkMode(winhandle, false);
+            SetWindowImmersiveDarkMode(hWnd, false);
         }
     }
 
@@ -38,7 +38,7 @@ public class Win32
     private class ImportWindow
     {
         [DllImport("dwmapi.dll")]
-        public static extern int DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttr, ref int pvAttr, int cbAttr);
+        public static extern int DwmSetWindowAttribute(IntPtr hWnd, DWMWINDOWATTRIBUTE dwAttr, ref int pvAttr, int cbAttr);
     }
 
     private enum DWMWINDOWATTRIBUTE

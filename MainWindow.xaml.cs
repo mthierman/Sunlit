@@ -15,32 +15,47 @@ public sealed partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-
         InitializeListener();
 
         Title = "Todo";
-        MyAppWindow.SetIcon("Assets/logo.ico");
+        appWindow.SetIcon("Assets/logo.ico");
 
-        _presenter.Initialize(MyAppWindow);
-        _win32.Initialize(WinHandle);
+        _presenter.Initialize(appWindow);
+        _presenter.InitializePresenterType(appWindow);
+        _presenter.Resize(appWindow);
+        _win32.Initialize(hWnd);
+
+        CompactToggleCheck();
     }
 
-    private IntPtr WinHandle
+    public IntPtr hWnd
     {
         get
         { return WindowNative.GetWindowHandle(this); }
     }
 
-    private WindowId WinId
+    public WindowId wndId
     {
         get
-        { return Win32Interop.GetWindowIdFromWindow(WinHandle); }
+        { return Win32Interop.GetWindowIdFromWindow(hWnd); }
     }
 
-    private AppWindow MyAppWindow
+    public AppWindow appWindow
     {
         get
-        { return AppWindow.GetFromWindowId(WinId); }
+        { return AppWindow.GetFromWindowId(wndId); }
+    }
+
+    private void CompactToggleCheck()
+    {
+        if (_presenter._setting.PresenterType == "Compact")
+        {
+            CompactToggle.IsChecked = true;
+        }
+        else
+        {
+            CompactToggle.IsChecked = false;
+        }
     }
 
     public void TogglePresenter(object sender, RoutedEventArgs e)
@@ -48,12 +63,14 @@ public sealed partial class MainWindow : Window
         ToggleButton toggleButton = sender as ToggleButton;
         if (((ToggleButton)sender).IsChecked == false)
         {
-            _presenter.DefaultPresenter(MyAppWindow);
+            _presenter.DefaultPresenter(appWindow);
+            _presenter.Resize(appWindow);
             toggleButton.Content = "\uEE49";
         }
         else
         {
-            _presenter.CompactPresenter(MyAppWindow);
+            _presenter.CompactPresenter(appWindow);
+            _presenter.Resize(appWindow);
             toggleButton.Content = "\uEE47";
         }
     }

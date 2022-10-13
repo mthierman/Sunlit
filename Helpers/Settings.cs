@@ -16,6 +16,7 @@ public class Setting
     public int DefaultHeight;
     public int CompactWidth;
     public int CompactHeight;
+    public string PresenterType;
 }
 
 public class Settings
@@ -48,27 +49,10 @@ public class Settings
         { Directory.CreateDirectory(AppData); };
     }
 
-    //public void SaveWindow(int DefaultWidth, int DefaultHeight, int CompactWidth, int CompactHeight)
-    //{
-    //    XmlSerializer serializer = new XmlSerializer(typeof(Setting));
-    //    StreamWriter writer = new StreamWriter(Filename);
-
-    //    Setting Setting = new Setting();
-    //    Setting.DefaultWidth = DefaultWidth;
-    //    Setting.DefaultHeight = DefaultHeight;
-    //    Setting.CompactWidth = CompactWidth;
-    //    Setting.CompactHeight = CompactWidth;
-
-    //    serializer.Serialize(writer, Setting);
-    //    writer.Close();
-    //    Debug.Print("Successfuly saved settings");
-    //}
-
     public void SaveWindow(Setting setting)
     {
         XmlSerializer serializer = new XmlSerializer(typeof(Setting));
         StreamWriter writer = new StreamWriter(Filename);
-
         serializer.Serialize(writer, setting);
         writer.Close();
         Debug.Print("Successfuly saved settings");
@@ -78,7 +62,6 @@ public class Settings
     {
         XmlSerializer serializer = new XmlSerializer(typeof(Setting));
         FileStream reader = new FileStream(Filename, FileMode.Open);
-
         Setting Setting = new Setting();
         Setting = (Setting)serializer.Deserialize(reader);
         reader.Close();
