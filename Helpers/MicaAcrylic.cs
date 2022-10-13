@@ -7,9 +7,9 @@ namespace Todo;
 public sealed partial class MainWindow : Window
 {
     private WindowsSystemDispatcherQueueHelper m_wsdqHelper;
-    private Microsoft.UI.Composition.SystemBackdrops.MicaController m_micaController;
-    private Microsoft.UI.Composition.SystemBackdrops.DesktopAcrylicController m_acrylicController;
-    private Microsoft.UI.Composition.SystemBackdrops.SystemBackdropConfiguration m_configurationSource;
+    public Microsoft.UI.Composition.SystemBackdrops.MicaController m_micaController;
+    public Microsoft.UI.Composition.SystemBackdrops.DesktopAcrylicController m_acrylicController;
+    public Microsoft.UI.Composition.SystemBackdrops.SystemBackdropConfiguration m_configurationSource;
 
     private class WindowsSystemDispatcherQueueHelper
     {
@@ -42,7 +42,7 @@ public sealed partial class MainWindow : Window
         }
     }
 
-    bool TrySetMicaBackdrop()
+    bool Initialize()
     {
         if (Microsoft.UI.Composition.SystemBackdrops.MicaController.IsSupported())
         {
@@ -58,12 +58,7 @@ public sealed partial class MainWindow : Window
             m_micaController.SetSystemBackdropConfiguration(m_configurationSource);
             return true;
         }
-        return false;
-    }
-
-    bool TrySetAcrylicBackdrop()
-    {
-        if (Microsoft.UI.Composition.SystemBackdrops.DesktopAcrylicController.IsSupported())
+        else if (Microsoft.UI.Composition.SystemBackdrops.DesktopAcrylicController.IsSupported())
         {
             m_wsdqHelper = new WindowsSystemDispatcherQueueHelper();
             m_wsdqHelper.EnsureWindowsSystemDispatcherQueueController();
@@ -78,7 +73,7 @@ public sealed partial class MainWindow : Window
         return false;
     }
 
-    private void SetConfigurationSourceTheme()
+    public void SetConfigurationSourceTheme()
     {
         switch (((FrameworkElement)this.Content).ActualTheme)
         {

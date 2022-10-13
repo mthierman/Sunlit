@@ -33,44 +33,56 @@ public class Settings
         { return Path.Combine(LocalAppData, "mthierman", "todo"); }
     }
 
-    private string Filename
+    public string Filename
     {
         get
         { return (Path.Combine(AppData, "Settings.xml")); }
     }
 
-    public void Print()
+    public void Initialize()
     {
         Debug.Print("Local App Data folder: {0}", LocalAppData);
         Debug.Print("App Data folder: {0}", AppData);
         Debug.Print("Settings file: {0}", Filename);
-    }
-
-    public void Check()
-    {
         if (!Directory.Exists(AppData))
         { Directory.CreateDirectory(AppData); };
     }
 
-    public void SaveWindow(int DefaultWidth, int DefaultHeight, int CompactWidth, int CompactHeight)
+    //public void SaveWindow(int DefaultWidth, int DefaultHeight, int CompactWidth, int CompactHeight)
+    //{
+    //    XmlSerializer serializer = new XmlSerializer(typeof(Setting));
+    //    StreamWriter writer = new StreamWriter(Filename);
+
+    //    Setting Setting = new Setting();
+    //    Setting.DefaultWidth = DefaultWidth;
+    //    Setting.DefaultHeight = DefaultHeight;
+    //    Setting.CompactWidth = CompactWidth;
+    //    Setting.CompactHeight = CompactWidth;
+
+    //    serializer.Serialize(writer, Setting);
+    //    writer.Close();
+    //    Debug.Print("Successfuly saved settings");
+    //}
+
+    public void SaveWindow(Setting setting)
     {
         XmlSerializer serializer = new XmlSerializer(typeof(Setting));
         StreamWriter writer = new StreamWriter(Filename);
-        Setting Setting = new Setting();
-        Setting.DefaultWidth = DefaultWidth;
-        Setting.DefaultHeight = DefaultHeight;
-        Setting.CompactWidth = CompactWidth;
-        Setting.CompactHeight = CompactWidth;
-        serializer.Serialize(writer, Setting);
+
+        serializer.Serialize(writer, setting);
         writer.Close();
+        Debug.Print("Successfuly saved settings");
     }
 
-    public void LoadWindow()
+    public Setting LoadWindow()
     {
         XmlSerializer serializer = new XmlSerializer(typeof(Setting));
-        FileStream fs = new FileStream(Filename, FileMode.Open);
-        Setting Setting;
-        Setting = (Setting)serializer.Deserialize(fs);
-        fs.Close();
+        FileStream reader = new FileStream(Filename, FileMode.Open);
+
+        Setting Setting = new Setting();
+        Setting = (Setting)serializer.Deserialize(reader);
+        reader.Close();
+        Debug.Print("Successfuly loaded settings");
+        return Setting;
     }
 }

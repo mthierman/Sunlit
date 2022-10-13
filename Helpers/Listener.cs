@@ -16,15 +16,15 @@ public sealed partial class MainWindow : Window
         var color = _uiSettings.GetColorValue(UIColorType.Background);
         if (color.ToString() == "#FF000000")
         {
-            SetWindowImmersiveDarkMode(WinHandle, true);
+            Win32.SetWindowImmersiveDarkMode(WinHandle, true);
         }
         else
         {
-            SetWindowImmersiveDarkMode(WinHandle, false);
+            Win32.SetWindowImmersiveDarkMode(WinHandle, false);
         }
     }
 
-    private void ActivateListeners()
+    public void InitializeListener()
     {
         this.Activated += WindowActivated;
         this.Closed += WindowClosed;
@@ -55,6 +55,6 @@ public sealed partial class MainWindow : Window
         this.Closed -= WindowClosed;
         ((FrameworkElement)this.Content).ActualThemeChanged -= WindowThemeChanged;
         m_configurationSource = null;
-        Settings.SaveWindow(Setting.DefaultWidth, Setting.DefaultHeight, Setting.CompactWidth, Setting.CompactHeight);
+        //Settings.SaveWindow(Setting.DefaultWidth, Setting.DefaultHeight, Setting.CompactWidth, Setting.CompactHeight);
     }
 }

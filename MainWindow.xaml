@@ -17,7 +17,7 @@
         <Grid>
             <ToggleButton
                 x:Name="CompactToggle"
-                Click="SwitchPresenter_CompactOverlay"
+                Click="TogglePresenter"
                 Content="&#xEE49;"
                 FontFamily="Segoe Fluent Icons"
                 HorizontalAlignment="Right"

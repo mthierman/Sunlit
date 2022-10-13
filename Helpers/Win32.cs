@@ -1,43 +1,22 @@
-﻿using Microsoft.UI;
-using Microsoft.UI.Windowing;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using WinRT.Interop;
 
 namespace Todo;
 
-public sealed partial class MainWindow : Window
+public class Win32
 {
-    private IntPtr WinHandle
-    {
-        get
-        { return WindowNative.GetWindowHandle(this); }
-    }
-
-    private WindowId WinId
-    {
-        get
-        { return Win32Interop.GetWindowIdFromWindow(WinHandle); }
-    }
-
-    private AppWindow MyAppWindow
-    {
-        get
-        { return AppWindow.GetFromWindowId(WinId); }
-    }
-
-    private void InitialTheme()
+    public void Initialize(IntPtr winhandle)
     {
         _ = ImportTheme.SetPreferredAppMode(PreferredAppMode.AllowDark);
         if (Application.Current.RequestedTheme == ApplicationTheme.Dark)
         {
-            SetWindowImmersiveDarkMode(WinHandle, true);
+            SetWindowImmersiveDarkMode(winhandle, true);
         }
         else
         {
-            SetWindowImmersiveDarkMode(WinHandle, false);
+            SetWindowImmersiveDarkMode(winhandle, false);
         }
     }
 
@@ -67,7 +46,7 @@ public sealed partial class MainWindow : Window
         DWMWA_USE_IMMERSIVE_DARK_MODE = 20
     }
 
-    private static void SetWindowImmersiveDarkMode(IntPtr hWnd, bool enabled)
+    public static void SetWindowImmersiveDarkMode(IntPtr hWnd, bool enabled)
     {
         int isEnabled = enabled ? 1 : 0;
         int result = ImportWindow.DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref isEnabled, sizeof(int));
