@@ -8,8 +8,8 @@ namespace Todo;
 
 public class Theme
 {
-    //private readonly MainWindow _mainWindow;
-    MainWindow _mainWindow = new();
+    private readonly MainWindow _mainWindow;
+    //MainWindow _mainWindow = new();
 
     private WindowsSystemDispatcherQueueHelper _wsdqHelper;
     public Microsoft.UI.Composition.SystemBackdrops.MicaController _micaController;

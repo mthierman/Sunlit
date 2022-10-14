@@ -5,23 +5,24 @@ namespace Todo;
 
 public class Presenter
 {
+    private readonly MainWindow _mainWindow;
+
     private OverlappedPresenter _overlapped;
     private OverlappedPresenter _compact;
-    private Setting _setting;
 
-    public void Initialize(AppWindow appwindow)
+    public void Initialize()
     {
         if (File.Exists(Setting.Filename))
-        { _setting = Setting.Load(); }
+        { _mainWindow._setting = Setting.Load(); }
         else
         {
-            Setting.Save(_setting);
+            Setting.Save(_mainWindow._setting);
         }
     }
 
     public void InitializePresenterType(AppWindow appwindow)
     {
-        if (_setting.PresenterType == "Compact")
+        if (_mainWindow._setting.PresenterType == "Compact")
         { CompactPresenter(appwindow); }
         else
         { DefaultPresenter(appwindow); }
@@ -29,10 +30,10 @@ public class Presenter
 
     public void Resize(AppWindow appwindow)
     {
-        if (_setting.PresenterType == "Compact")
-        { appwindow.Resize(new Windows.Graphics.SizeInt32 { Width = _setting.CompactWidth, Height = _setting.CompactHeight }); }
+        if (_mainWindow._setting.PresenterType == "Compact")
+        { appwindow.Resize(new Windows.Graphics.SizeInt32 { Width = _mainWindow._setting.CompactWidth, Height = _mainWindow._setting.CompactHeight }); }
         else
-        { appwindow.Resize(new Windows.Graphics.SizeInt32 { Width = _setting.DefaultWidth, Height = _setting.DefaultHeight }); }
+        { appwindow.Resize(new Windows.Graphics.SizeInt32 { Width = _mainWindow._setting.DefaultWidth, Height = _mainWindow._setting.DefaultHeight }); }
     }
 
     public void DefaultPresenter(AppWindow appwindow)
@@ -42,7 +43,7 @@ public class Presenter
         _overlapped.IsAlwaysOnTop = false;
         _overlapped.IsMaximizable = true;
         _overlapped.IsMinimizable = true;
-        _setting.PresenterType = "Default";
+        _mainWindow._setting.PresenterType = "Default";
     }
 
     public void CompactPresenter(AppWindow appwindow)
@@ -52,6 +53,6 @@ public class Presenter
         _compact.IsAlwaysOnTop = true;
         _compact.IsMaximizable = false;
         _compact.IsMinimizable = false;
-        _setting.PresenterType = "Compact";
+        _mainWindow._setting.PresenterType = "Compact";
     }
 }

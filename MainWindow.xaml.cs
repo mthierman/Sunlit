@@ -10,10 +10,10 @@ namespace Todo;
 
 public sealed partial class MainWindow : Window
 {
-    Presenter _presenter = new Presenter();
-    Listener _listeners = new Listener();
-    Theme _theme = new Theme();
-    private readonly Setting _setting;
+    public Listener _listener = new();
+    public Presenter _presenter = new();
+    public Setting _setting = new();
+    public Theme _theme = new();
 
     public MainWindow()
     {
@@ -22,9 +22,9 @@ public sealed partial class MainWindow : Window
         Title = "Todo";
         appWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/logo.ico"));
 
-        _listeners.InitializeListener();
+        _listener.InitializeListener();
 
-        _presenter.Initialize(appWindow);
+        _presenter.Initialize();
         _presenter.InitializePresenterType(appWindow);
         _presenter.Resize(appWindow);
 
