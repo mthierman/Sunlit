@@ -10,10 +10,7 @@ namespace Todo;
 
 public sealed partial class MainWindow : Window
 {
-    public Listener _listener = new();
-    public Presenter _presenter = new();
     public Setting _setting = new();
-    public Theme _theme = new();
 
     public MainWindow()
     {
@@ -22,13 +19,13 @@ public sealed partial class MainWindow : Window
         Title = "Todo";
         appWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/logo.ico"));
 
-        _listener.InitializeListener();
+        InitializeListener();
 
-        _presenter.Initialize();
-        _presenter.InitializePresenterType(appWindow);
-        _presenter.Resize(appWindow);
+        InitializePresenter();
+        InitializePresenterType(appWindow);
+        Resize(appWindow);
 
-        _theme.DarkMode(hWnd);
+        InitializeDarkMode(hWnd);
 
         CompactToggleCheck();
     }
@@ -68,14 +65,14 @@ public sealed partial class MainWindow : Window
         ToggleButton toggleButton = sender as ToggleButton;
         if (((ToggleButton)sender).IsChecked == false)
         {
-            _presenter.DefaultPresenter(appWindow);
-            _presenter.Resize(appWindow);
+            DefaultPresenter(appWindow);
+            Resize(appWindow);
             toggleButton.Content = "\uEE49";
         }
         else
         {
-            _presenter.CompactPresenter(appWindow);
-            _presenter.Resize(appWindow);
+            CompactPresenter(appWindow);
+            Resize(appWindow);
             toggleButton.Content = "\uEE47";
         }
     }

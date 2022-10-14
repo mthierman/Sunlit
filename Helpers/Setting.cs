@@ -12,15 +12,6 @@ public class Setting
     public int CompactWidth { get; set; } = 200;
     public int CompactHeight { get; set; } = 400;
 
-    //public Setting(string type, uint defWidth, uint defHeight, uint compWidth, uint compHeight)
-    //{
-    //    PresenterType = type;
-    //    DefaultWidth = defWidth;
-    //    DefaultHeight = defHeight;
-    //    CompactWidth = compWidth;
-    //    CompactHeight = compHeight;
-    //}
-
     public static string LocalAppData
     {
         get
@@ -36,7 +27,7 @@ public class Setting
     public static string Filename
     {
         get
-        { return (Path.Combine(AppData, "Settings.xml")); }
+        { return (Path.Combine(AppData, "Settings.json")); }
     }
 
     public void Initialize()

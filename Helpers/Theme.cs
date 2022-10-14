@@ -6,11 +6,8 @@ using WinRT;
 
 namespace Todo;
 
-public class Theme
+public sealed partial class MainWindow : Window
 {
-    private readonly MainWindow _mainWindow;
-    //MainWindow _mainWindow = new();
-
     private WindowsSystemDispatcherQueueHelper _wsdqHelper;
     public Microsoft.UI.Composition.SystemBackdrops.MicaController _micaController;
     public Microsoft.UI.Composition.SystemBackdrops.DesktopAcrylicController _acrylicController;
@@ -47,7 +44,20 @@ public class Theme
         }
     }
 
-    bool Initialize()
+    public void InitializeDarkMode(IntPtr hWnd)
+    {
+        _ = ImportTheme.SetPreferredAppMode(PreferredAppMode.AllowDark);
+        if (Application.Current.RequestedTheme == ApplicationTheme.Dark)
+        {
+            SetWindowImmersiveDarkMode(hWnd, true);
+        }
+        else
+        {
+            SetWindowImmersiveDarkMode(hWnd, false);
+        }
+    }
+
+    bool InitializeMicaAcrylic()
     {
         if (Microsoft.UI.Composition.SystemBackdrops.MicaController.IsSupported())
         {
@@ -80,24 +90,11 @@ public class Theme
 
     public void SetConfigurationSourceTheme()
     {
-        switch (((FrameworkElement)_mainWindow.Content).ActualTheme)
+        switch (((FrameworkElement)this.Content).ActualTheme)
         {
             case ElementTheme.Dark: _configurationSource.Theme = Microsoft.UI.Composition.SystemBackdrops.SystemBackdropTheme.Dark; break;
             case ElementTheme.Light: _configurationSource.Theme = Microsoft.UI.Composition.SystemBackdrops.SystemBackdropTheme.Light; break;
             case ElementTheme.Default: _configurationSource.Theme = Microsoft.UI.Composition.SystemBackdrops.SystemBackdropTheme.Default; break;
-        }
-    }
-
-    public void DarkMode(IntPtr hWnd)
-    {
-        _ = ImportTheme.SetPreferredAppMode(PreferredAppMode.AllowDark);
-        if (Application.Current.RequestedTheme == ApplicationTheme.Dark)
-        {
-            SetWindowImmersiveDarkMode(hWnd, true);
-        }
-        else
-        {
-            SetWindowImmersiveDarkMode(hWnd, false);
         }
     }
 
