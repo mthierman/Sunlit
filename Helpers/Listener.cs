@@ -71,6 +71,6 @@ public sealed partial class MainWindow : Window
         this.SizeChanged -= WindowSizeChanged;
         ((FrameworkElement)this.Content).ActualThemeChanged -= WindowThemeChanged;
         _configurationSource = null;
-        //_setting.SaveWindow(_setting);
+        Setting.Save(_setting);
     }
 }

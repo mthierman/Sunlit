@@ -45,8 +45,7 @@ public class Setting
 
     public static Setting Load()
     {
-        byte[] bytes = File.ReadAllBytes(Filename);
-        var span = new ReadOnlySpan<byte>(bytes);
-        return JsonSerializer.Deserialize<Setting>(span);
+        var stream = File.ReadAllBytes(Filename);
+        return JsonSerializer.Deserialize<Setting>(stream);
     }
 }
