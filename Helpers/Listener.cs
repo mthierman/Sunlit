@@ -3,75 +3,80 @@ using Windows.UI.ViewManagement;
 
 namespace Todo;
 
-public sealed partial class MainWindow : Window
+public class Listener
 {
+    //private readonly UISettings _uiSettings = new();
+    //MainWindow _mainWindow = new();
+
     private readonly UISettings _uiSettings = new();
-    Settings _settings = new Settings();
+    private readonly Theme _theme;
+    private readonly MainWindow _window;
+    private readonly Setting _setting;
 
     private void WindowThemeChanged(FrameworkElement sender, object args)
     {
-        if (m_configurationSource != null)
-        {
-            SetConfigurationSourceTheme();
-        }
         var color = _uiSettings.GetColorValue(UIColorType.Background);
+        if (_theme._configurationSource != null)
+        {
+            _theme.SetConfigurationSourceTheme();
+        }
         if (color.ToString() == "#FF000000")
         {
-            Win32.SetWindowImmersiveDarkMode(hWnd, true);
+            Theme.SetWindowImmersiveDarkMode(_window.hWnd, true);
         }
         else
         {
-            Win32.SetWindowImmersiveDarkMode(hWnd, false);
+            Theme.SetWindowImmersiveDarkMode(_window.hWnd, false);
         }
     }
 
     private void WindowSizeChanged(object sender, WindowSizeChangedEventArgs e)
     {
-        if (_presenter._setting.PresenterType == "Compact")
+        if (_setting.PresenterType == "Compact")
         {
-            _presenter._setting.CompactWidth = appWindow.Size.Width;
-            _presenter._setting.CompactHeight = appWindow.Size.Height;
+            _setting.CompactWidth = _window.appWindow.Size.Width;
+            _setting.CompactHeight = _window.appWindow.Size.Height;
         }
         else
         {
-            _presenter._setting.DefaultWidth = appWindow.Size.Width;
-            _presenter._setting.DefaultHeight = appWindow.Size.Height;
+            _setting.DefaultWidth = _window.appWindow.Size.Width;
+            _setting.DefaultHeight = _window.appWindow.Size.Height;
         }
     }
 
     public void InitializeListener()
     {
-        this.Activated += WindowActivated;
-        this.Closed += WindowClosed;
-        this.SizeChanged += WindowSizeChanged;
-        ((FrameworkElement)this.Content).ActualThemeChanged += WindowThemeChanged;
+        _window.Activated += WindowActivated;
+        _window.Closed += WindowClosed;
+        _window.SizeChanged += WindowSizeChanged;
+        ((FrameworkElement)_window.Content).ActualThemeChanged += WindowThemeChanged;
     }
 
     private void WindowActivated(object sender, WindowActivatedEventArgs e)
     {
-        if (m_configurationSource != null)
+        if (_theme._configurationSource != null)
         {
-            m_configurationSource.IsInputActive = e.WindowActivationState != WindowActivationState.Deactivated;
+            _theme._configurationSource.IsInputActive = e.WindowActivationState != WindowActivationState.Deactivated;
         }
     }
 
     private void WindowClosed(object sender, WindowEventArgs e)
     {
-        if (m_acrylicController != null)
+        if (_theme._acrylicController != null)
         {
-            m_acrylicController.Dispose();
-            m_acrylicController = null;
+            _theme._acrylicController.Dispose();
+            _theme._acrylicController = null;
         }
-        if (m_micaController != null)
+        if (_theme._micaController != null)
         {
-            m_micaController.Dispose();
-            m_micaController = null;
+            _theme._micaController.Dispose();
+            _theme._micaController = null;
         }
-        this.Activated -= WindowActivated;
-        this.Closed -= WindowClosed;
-        this.SizeChanged -= WindowSizeChanged;
-        ((FrameworkElement)this.Content).ActualThemeChanged -= WindowThemeChanged;
-        m_configurationSource = null;
-        _settings.SaveWindow(_presenter._setting);
+        _window.Activated -= WindowActivated;
+        _window.Closed -= WindowClosed;
+        _window.SizeChanged -= WindowSizeChanged;
+        ((FrameworkElement)_window.Content).ActualThemeChanged -= WindowThemeChanged;
+        _theme._configurationSource = null;
+        //_setting.SaveWindow(_setting);
     }
 }

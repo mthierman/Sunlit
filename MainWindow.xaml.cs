@@ -3,6 +3,7 @@ using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using System;
+using System.IO;
 using WinRT.Interop;
 
 namespace Todo;
@@ -10,20 +11,24 @@ namespace Todo;
 public sealed partial class MainWindow : Window
 {
     Presenter _presenter = new Presenter();
-    Win32 _win32 = new Win32();
+    Listener _listeners = new Listener();
+    Theme _theme = new Theme();
+    private readonly Setting _setting;
 
     public MainWindow()
     {
         InitializeComponent();
-        InitializeListener();
 
         Title = "Todo";
-        appWindow.SetIcon("Assets/logo.ico");
+        appWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/logo.ico"));
+
+        _listeners.InitializeListener();
 
         _presenter.Initialize(appWindow);
         _presenter.InitializePresenterType(appWindow);
         _presenter.Resize(appWindow);
-        _win32.Initialize(hWnd);
+
+        _theme.DarkMode(hWnd);
 
         CompactToggleCheck();
     }
@@ -48,7 +53,7 @@ public sealed partial class MainWindow : Window
 
     private void CompactToggleCheck()
     {
-        if (_presenter._setting.PresenterType == "Compact")
+        if (_setting.PresenterType == "Compact")
         {
             CompactToggle.IsChecked = true;
         }

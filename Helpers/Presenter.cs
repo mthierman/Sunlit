@@ -5,49 +5,34 @@ namespace Todo;
 
 public class Presenter
 {
-    Settings _settings = new Settings();
-    public Setting _setting = new Setting();
     private OverlappedPresenter _overlapped;
     private OverlappedPresenter _compact;
+    private Setting _setting;
 
     public void Initialize(AppWindow appwindow)
     {
-        if (File.Exists(_settings.Filename))
-        { _setting = _settings.LoadWindow(); }
+        if (File.Exists(Setting.Filename))
+        { _setting = Setting.Load(); }
         else
         {
-            _setting.DefaultWidth = 800;
-            _setting.DefaultHeight = 800;
-            _setting.CompactWidth = 300;
-            _setting.CompactHeight = 300;
-            _setting.PresenterType = "Default";
-            _settings.SaveWindow(_setting);
+            Setting.Save(_setting);
         }
     }
 
     public void InitializePresenterType(AppWindow appwindow)
     {
         if (_setting.PresenterType == "Compact")
-        {
-            CompactPresenter(appwindow);
-            //MainWindow.CompactToggle.IsChecked = true;
-        }
+        { CompactPresenter(appwindow); }
         else
-        {
-            DefaultPresenter(appwindow);
-        }
+        { DefaultPresenter(appwindow); }
     }
 
     public void Resize(AppWindow appwindow)
     {
         if (_setting.PresenterType == "Compact")
-        {
-            appwindow.Resize(new Windows.Graphics.SizeInt32 { Width = _setting.CompactWidth, Height = _setting.CompactHeight });
-        }
+        { appwindow.Resize(new Windows.Graphics.SizeInt32 { Width = _setting.CompactWidth, Height = _setting.CompactHeight }); }
         else
-        {
-            appwindow.Resize(new Windows.Graphics.SizeInt32 { Width = _setting.DefaultWidth, Height = _setting.DefaultHeight });
-        }
+        { appwindow.Resize(new Windows.Graphics.SizeInt32 { Width = _setting.DefaultWidth, Height = _setting.DefaultHeight }); }
     }
 
     public void DefaultPresenter(AppWindow appwindow)
