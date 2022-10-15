@@ -14,6 +14,7 @@ public sealed partial class MainWindow : Window
 
     public MainWindow()
     {
+        SetStyles();
         InitializeComponent();
 
         Title = "Todo";

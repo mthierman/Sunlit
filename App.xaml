@@ -4,16 +4,19 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Todo">
     <Application.Resources>
+
         <ResourceDictionary>
+
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
-                <!-- Other merged dictionaries here -->
             </ResourceDictionary.MergedDictionaries>
-            <!-- Other app resources here -->
+
             <ResourceDictionary.ThemeDictionaries>
-                <ResourceDictionary Source="ResourceDictionary1.xaml" x:Key="Light"/>
-                <ResourceDictionary Source="ResourceDictionary2.xaml" x:Key="Dark"/>
+                <ResourceDictionary Source="ThemeDefault.xaml" x:Key="Default"/>
+                <ResourceDictionary Source="ThemeLight.xaml" x:Key="Light"/>
+                <ResourceDictionary Source="ThemeDark.xaml" x:Key="Dark"/>
             </ResourceDictionary.ThemeDictionaries>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

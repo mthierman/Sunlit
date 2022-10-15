@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using Microsoft.UI;
+using Microsoft.UI.Xaml;
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
@@ -46,7 +47,7 @@ public sealed partial class MainWindow : Window
 
     public void InitializeDarkMode(IntPtr hWnd)
     {
-        _ = ImportTheme.SetPreferredAppMode(PreferredAppMode.AllowDark);
+        ImportTheme.SetPreferredAppMode(PreferredAppMode.AllowDark);
         if (Application.Current.RequestedTheme == ApplicationTheme.Dark)
         {
             SetWindowImmersiveDarkMode(hWnd, true);
@@ -54,6 +55,36 @@ public sealed partial class MainWindow : Window
         else
         {
             SetWindowImmersiveDarkMode(hWnd, false);
+        }
+    }
+
+    //public void SetStyles()
+    //{
+    //    var color = _uiSettings.GetColorValue(UIColorType.Background);
+    //    if (color.ToString() == "#FF000000")
+    //    {
+    //        Application.Current.Resources["ToggleButtonBackground"] = ColorHelper.FromArgb(255, 255, 255, 255);
+    //        Application.Current.Resources["ToggleButtonBackgroundChecked"] = ColorHelper.FromArgb(255, 255, 255, 255);
+    //    }
+    //    else
+    //    {
+    //        Application.Current.Resources["ToggleButtonBackground"] = ColorHelper.FromArgb(255, 255, 255, 255);
+    //        Application.Current.Resources["ToggleButtonBackgroundChecked"] = ColorHelper.FromArgb(255, 255, 255, 255);
+    //    }
+    //}
+
+    public void SetStyles()
+    {
+        //var color = _uiSettings.GetColorValue(UIColorType.Background);
+        if (Application.Current.RequestedTheme == ApplicationTheme.Dark)
+        {
+            Application.Current.Resources["ToggleButtonBackground"] = ColorHelper.FromArgb(0, 255, 255, 255);
+            Application.Current.Resources["ToggleButtonBackgroundChecked"] = ColorHelper.FromArgb(0, 255, 255, 255);
+        }
+        else
+        {
+            Application.Current.Resources["ToggleButtonBackground"] = ColorHelper.FromArgb(255, 255, 255, 255);
+            Application.Current.Resources["ToggleButtonBackgroundChecked"] = ColorHelper.FromArgb(255, 255, 255, 255);
         }
     }
 

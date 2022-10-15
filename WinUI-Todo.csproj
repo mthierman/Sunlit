@@ -13,8 +13,9 @@
 	<WindowsPackageType>None</WindowsPackageType>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="ResourceDictionary1.xaml" />
-    <None Remove="ResourceDictionary2.xaml" />
+    <None Remove="ThemeDark.xaml" />
+    <None Remove="ThemeDefault.xaml" />
+    <None Remove="ThemeLight.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,12 +50,17 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
-    <Page Update="ResourceDictionary2.xaml">
+    <Page Update="ThemeDefault.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="ResourceDictionary1.xaml">
+    <Page Update="ThemeDark.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="ThemeLight.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

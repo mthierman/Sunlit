@@ -17,6 +17,7 @@ public sealed partial class MainWindow : Window
 
     private void WindowThemeChanged(FrameworkElement sender, object args)
     {
+        SetStyles();
         var color = _uiSettings.GetColorValue(UIColorType.Background);
         if (_configurationSource != null)
         {
