@@ -30,7 +30,7 @@ public class Setting
         { return (Path.Combine(AppData, "Settings.json")); }
     }
 
-    public void Initialize()
+    public static void Initialize()
     {
         if (!Directory.Exists(AppData))
         { Directory.CreateDirectory(AppData); };
@@ -38,14 +38,14 @@ public class Setting
 
     public static void Save(Setting setting)
     {
-        using var stream = File.Create(Filename);
-        using var writer = new Utf8JsonWriter(stream);
+        using FileStream stream = File.Create(Filename);
+        using Utf8JsonWriter writer = new(stream);
         JsonSerializer.Serialize(writer, setting);
     }
 
     public static Setting Load()
     {
-        var stream = File.ReadAllBytes(Filename);
+        byte[] stream = File.ReadAllBytes(Filename);
         return JsonSerializer.Deserialize<Setting>(stream);
     }
 }

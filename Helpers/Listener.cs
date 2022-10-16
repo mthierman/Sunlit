@@ -9,42 +9,10 @@ public sealed partial class MainWindow : Window
 
     public void InitializeListener()
     {
-        this.Activated += WindowActivated;
-        this.Closed += WindowClosed;
-        this.SizeChanged += WindowSizeChanged;
-        ((FrameworkElement)this.Content).ActualThemeChanged += WindowThemeChanged;
-    }
-
-    private void WindowThemeChanged(FrameworkElement sender, object args)
-    {
-        SetStyles();
-        var color = _uiSettings.GetColorValue(UIColorType.Background);
-        if (_configurationSource != null)
-        {
-            SetConfigurationSourceTheme();
-        }
-        if (color.ToString() == "#FF000000")
-        {
-            SetWindowImmersiveDarkMode(hWnd, true);
-        }
-        else
-        {
-            SetWindowImmersiveDarkMode(hWnd, false);
-        }
-    }
-
-    private void WindowSizeChanged(object sender, WindowSizeChangedEventArgs e)
-    {
-        if (_setting.PresenterType == "Compact")
-        {
-            _setting.CompactWidth = appWindow.Size.Width;
-            _setting.CompactHeight = appWindow.Size.Height;
-        }
-        else
-        {
-            _setting.DefaultWidth = appWindow.Size.Width;
-            _setting.DefaultHeight = appWindow.Size.Height;
-        }
+        Activated += WindowActivated;
+        Closed += WindowClosed;
+        ((FrameworkElement)Content).ActualThemeChanged += WindowThemeChanged;
+        SizeChanged += WindowSizeChanged;
     }
 
     private void WindowActivated(object sender, WindowActivatedEventArgs e)
@@ -57,21 +25,48 @@ public sealed partial class MainWindow : Window
 
     private void WindowClosed(object sender, WindowEventArgs e)
     {
-        if (_acrylicController != null)
-        {
-            _acrylicController.Dispose();
-            _acrylicController = null;
-        }
+        //if (_acrylicController != null)
+        //{
+        //    _acrylicController.Dispose();
+        //    _acrylicController = null;
+        //}
         if (_micaController != null)
         {
             _micaController.Dispose();
             _micaController = null;
         }
-        this.Activated -= WindowActivated;
-        this.Closed -= WindowClosed;
-        this.SizeChanged -= WindowSizeChanged;
-        ((FrameworkElement)this.Content).ActualThemeChanged -= WindowThemeChanged;
+        Activated -= WindowActivated;
+        Closed -= WindowClosed;
+        SizeChanged -= WindowSizeChanged;
+        ((FrameworkElement)Content).ActualThemeChanged -= WindowThemeChanged;
         _configurationSource = null;
-        Setting.Save(_setting);
+        Setting.Save(setting);
+    }
+
+    private void WindowThemeChanged(FrameworkElement sender, object args)
+    {
+        if (_configurationSource != null)
+        {
+            SetConfigurationSourceTheme();
+        }
+        switch (((FrameworkElement)Content).ActualTheme)
+        {
+            case ElementTheme.Dark: SetDarkMode(); break;
+            case ElementTheme.Light: SetLightMode(); break;
+        }
+    }
+
+    private void WindowSizeChanged(object sender, WindowSizeChangedEventArgs e)
+    {
+        if (setting.PresenterType == "Compact")
+        {
+            setting.CompactWidth = appWindow.Size.Width;
+            setting.CompactHeight = appWindow.Size.Height;
+        }
+        else
+        {
+            setting.DefaultWidth = appWindow.Size.Width;
+            setting.DefaultHeight = appWindow.Size.Height;
+        }
     }
 }

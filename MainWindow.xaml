@@ -16,8 +16,8 @@
 
         <Grid>
             <ToggleButton
-                x:Name="CompactToggle"
-                Click="TogglePresenter"
+                x:Name="PresenterToggleButton"
+                Click="PresenterToggle"
                 Content="&#xEE49;"
                 FontFamily="Segoe Fluent Icons"
                 HorizontalAlignment="Right"
@@ -25,8 +25,12 @@
             </ToggleButton>
         </Grid>
 
-        <controls:WebView2 x:Name="MyWebView" Grid.Row="1"
-        Source="https://localhost:8000/" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <controls:WebView2
+            x:Name="MyWebView"
+            Grid.Row="1"
+            Source="https://localhost:8000/"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"/>
     </Grid>
 
 </Window>

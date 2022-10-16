@@ -14,7 +14,6 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="ThemeDark.xaml" />
-    <None Remove="ThemeDefault.xaml" />
     <None Remove="ThemeLight.xaml" />
   </ItemGroup>
 
@@ -48,11 +47,6 @@
   -->
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="ThemeDefault.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="ThemeDark.xaml">
