@@ -1,10 +1,10 @@
 {
   "profiles": {
-    "WinUI-Todo (Package)": {
-      "commandName": "MsixPackage"
-    },
-    "WinUI-Todo (Unpackaged)": {
+    "Calendar (Unpackaged)": {
       "commandName": "Project"
+    },
+    "Calendar (Package)": {
+      "commandName": "MsixPackage"
     }
   }
 }

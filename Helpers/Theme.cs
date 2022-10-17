@@ -4,7 +4,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using WinRT;
 
-namespace Todo;
+namespace Calendar;
 
 internal sealed partial class MainWindow : Window
 {

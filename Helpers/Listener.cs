@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using Windows.UI.ViewManagement;
 
-namespace Todo;
+namespace Calendar;
 
 internal sealed partial class MainWindow : Window
 {

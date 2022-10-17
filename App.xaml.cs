@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using System;
 
-namespace Todo;
+namespace Calendar;
 
 public sealed partial class App : Application
 {

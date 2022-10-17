@@ -3,7 +3,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using System.IO;
 
-namespace Todo;
+namespace Calendar;
 
 internal sealed partial class MainWindow : Window
 {

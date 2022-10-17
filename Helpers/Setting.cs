@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text.Json;
 
-namespace Todo;
+namespace Calendar;
 
 internal sealed class Setting
 {
