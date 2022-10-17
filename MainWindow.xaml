@@ -9,16 +9,13 @@
     xmlns:controls="using:Microsoft.UI.Xaml.Controls">
 
     <Grid Background="Transparent">
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <!--<RowDefinition Height="400"/>-->
         </Grid.RowDefinitions>
-        <!--<Grid.ColumnDefinitions>
-            <ColumnDefinition MinWidth="400"/>
-        </Grid.ColumnDefinitions>-->
-
 
         <ToggleButton
             Grid.Row="0"
@@ -76,34 +73,34 @@
             Margin="4,0"
             Padding="0"
             HorizontalAlignment="Stretch">
-                <StackPanel
+            <StackPanel
                     Margin="4"
                     HorizontalAlignment="Stretch">
-                        <CheckBox>
-                            <TextBox
+                <CheckBox>
+                    <TextBox
                                 Header="Task #1"
                                 >
-                            </TextBox>
-                        </CheckBox>
-                        <CheckBox>
-                            <TextBox Header="Task #2"></TextBox>
-                        </CheckBox>
-                        <CheckBox>
-                            <TextBox Header="Task #3"></TextBox>
-                        </CheckBox>
-                        <CheckBox>
-                            <TextBox Header="Task #4"></TextBox>
-                        </CheckBox>
-                </StackPanel>
+                    </TextBox>
+                </CheckBox>
+                <CheckBox>
+                    <TextBox Header="Task #2"></TextBox>
+                </CheckBox>
+                <CheckBox>
+                    <TextBox Header="Task #3"></TextBox>
+                </CheckBox>
+                <CheckBox>
+                    <TextBox Header="Task #4"></TextBox>
+                </CheckBox>
+            </StackPanel>
         </ScrollViewer>
 
-    </Grid>
-
-    <!--<controls:WebView2
+        <!--<controls:WebView2
+            Grid.Row="3"
             x:Name="MyWebView"
-            Grid.Row="1"
             Source="https://localhost:8000/"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"/>-->
+
+    </Grid>
 
 </Window>

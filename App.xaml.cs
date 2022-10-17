@@ -12,7 +12,7 @@ public sealed partial class App : Application
 
     public App()
     {
-        Environment.SetEnvironmentVariable("WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", _webviewMinimal);
+        Environment.SetEnvironmentVariable("WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", _webviewFull);
         InitializeComponent();
     }
 

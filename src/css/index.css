@@ -26,8 +26,8 @@
 }
 
 body {
-    color: var(--fg);
-    background-color: var(--bg);
+    color: var(--bg);
+    background-color: transparent;
     margin: 0 2em;
 }
 

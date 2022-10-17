@@ -4,7 +4,7 @@ import url from "url";
 export default defineConfig(({ command, mode }) => {
     if (command === "serve") {
         const cert = url.fileURLToPath(
-            new URL("../../.cert/localhost.pfx", import.meta.url)
+            new URL("../.cert/localhost.pfx", import.meta.url)
         );
         const passphrase = "localhost";
         return {
