@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Todo;
 
-public sealed partial class MainWindow : Window
+internal sealed partial class MainWindow : Window
 {
 
 

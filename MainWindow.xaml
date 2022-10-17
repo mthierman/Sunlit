@@ -8,29 +8,102 @@
     mc:Ignorable="d"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls">
 
-    <Grid>
+    <Grid Background="Transparent">
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
-            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
+        <!--<Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="400"/>
+        </Grid.ColumnDefinitions>-->
 
-        <Grid>
-            <ToggleButton
-                x:Name="PresenterToggleButton"
-                Click="PresenterToggle"
-                Content="&#xEE49;"
-                FontFamily="Segoe Fluent Icons"
-                HorizontalAlignment="Right"
-                Margin="8,8">
-            </ToggleButton>
-        </Grid>
 
-        <controls:WebView2
+        <ToggleButton
+            Grid.Row="0"
+            Background="Transparent"
+            x:Name="PresenterToggleButton"
+            Click="PresenterToggle"
+            Content="&#xEE49;"
+            FontFamily="Segoe Fluent Icons"
+            HorizontalAlignment="Right"
+            Margin="4,0">
+        </ToggleButton>
+
+        <CalendarView
+            Grid.Row="1"
+            Background="{ThemeResource AcrylicCalendar}"
+            SelectionMode="Single"
+            IsGroupLabelVisible="True"
+            IsOutOfScopeEnabled="True"
+            Language="en"
+            CalendarIdentifier="GregorianCalendar"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Margin="4,4"
+            CalendarItemBorderThickness="2"
+            CalendarItemCornerRadius="8"
+            CalendarItemHoverBackground="{ThemeResource AcrylicCalendar}"
+            HoverBorderBrush="Gray"
+            BorderThickness="0"
+            DayItemFontFamily="Segoe UI Variable Text"
+            DayItemFontSize="18"
+            HorizontalDayItemAlignment="Left"
+            VerticalDayItemAlignment="Bottom"
+            DayItemMargin="4,-4"
+            FirstOfMonthLabelFontFamily="Segoe UI Variable Text"
+            FirstOfMonthLabelFontSize="12"
+            FirstOfMonthLabelMargin="4,0"
+            HorizontalFirstOfMonthLabelAlignment="Left"
+            VerticalFirstOfMonthLabelAlignment="Top"
+            FirstOfYearDecadeLabelFontFamily="Segoe UI Variable Text"
+            FirstOfYearDecadeLabelFontSize="12"
+            FirstOfYearDecadeLabelMargin="0"
+            MonthYearItemFontFamily="Segoe UI Variable Text"
+            MonthYearItemFontSize="16"
+            Opacity="0.8"
+            TodayFontWeight="Bold"
+            MinWidth="400"/>
+
+        <ScrollViewer
+            Grid.Row="2"
+            Background="{StaticResource AcrylicCalendar}"
+            MaxHeight="100"
+            BorderBrush="{StaticResource AcrylicCalendar}"
+            BorderThickness="0"
+            CornerRadius="8"
+            Margin="4,0"
+            Padding="0"
+            HorizontalAlignment="Stretch">
+                <StackPanel
+                    Margin="4"
+                    HorizontalAlignment="Stretch">
+                        <CheckBox>
+                            <TextBox
+                                Header="Task #1"
+                                >
+                            </TextBox>
+                        </CheckBox>
+                        <CheckBox>
+                            <TextBox Header="Task #2"></TextBox>
+                        </CheckBox>
+                        <CheckBox>
+                            <TextBox Header="Task #3"></TextBox>
+                        </CheckBox>
+                        <CheckBox>
+                            <TextBox Header="Task #4"></TextBox>
+                        </CheckBox>
+                </StackPanel>
+        </ScrollViewer>
+
+    </Grid>
+
+    <!--<controls:WebView2
             x:Name="MyWebView"
             Grid.Row="1"
             Source="https://localhost:8000/"
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"/>
-    </Grid>
+            VerticalAlignment="Stretch"/>-->
 
 </Window>

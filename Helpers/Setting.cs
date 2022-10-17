@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace Todo;
 
-public class Setting
+internal sealed class Setting
 {
     public string PresenterType { get; set; } = "Default";
     public int DefaultWidth { get; set; } = 800;

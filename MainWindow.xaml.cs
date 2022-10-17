@@ -2,12 +2,12 @@
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using System;
-using System.IO;
+//using System.IO;
 using WinRT.Interop;
 
 namespace Todo;
 
-public sealed partial class MainWindow : Window
+internal sealed partial class MainWindow : Window
 {
     public Setting setting = new();
 
@@ -15,8 +15,7 @@ public sealed partial class MainWindow : Window
     {
         InitializeComponent();
 
-        Title = "Todo";
-        appWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/logo.ico"));
+        Title = "Calendar";
 
         InitializeListener();
         InitializePresenter(appWindow);

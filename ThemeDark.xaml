@@ -3,4 +3,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Todo">
 
+    <AcrylicBrush
+        AlwaysUseFallback="False"
+        x:Key="AcrylicCalendar"
+        TintOpacity="0.5"
+        TintColor="#000000"
+        FallbackColor="#000000"/>
+
 </ResourceDictionary>

@@ -1,10 +1,9 @@
 ﻿using Microsoft.UI.Xaml;
 using System;
-using Microsoft.Web.WebView2.Core;
 
 namespace Todo;
 
-public partial class App : Application
+public sealed partial class App : Application
 {
     private Window _appWindow;
 

@@ -3,7 +3,7 @@ using Windows.UI.ViewManagement;
 
 namespace Todo;
 
-public sealed partial class MainWindow : Window
+internal sealed partial class MainWindow : Window
 {
     private readonly UISettings _uiSettings = new();
 

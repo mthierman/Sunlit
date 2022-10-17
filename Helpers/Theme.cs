@@ -1,11 +1,12 @@
 ﻿using Microsoft.UI.Xaml;
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using WinRT;
 
 namespace Todo;
 
-public sealed partial class MainWindow : Window
+internal sealed partial class MainWindow : Window
 {
     private WindowsSystemDispatcherQueueHelper _wsdqHelper;
     public Microsoft.UI.Composition.SystemBackdrops.MicaController _micaController;
@@ -46,6 +47,7 @@ public sealed partial class MainWindow : Window
     public void SetDarkMode()
     {
         SetWindowImmersiveDarkMode(hWnd, true);
+        appWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/dark.ico"));
         //Application.Current.Resources["ToggleButtonBackground"] = Colors.Aquamarine;
         //Application.Current.Resources["ToggleButtonBackgroundPointerOver"] = Colors.Azure;
         //Application.Current.Resources["ToggleButtonBackgroundPressed"] = Colors.PaleVioletRed;
@@ -59,6 +61,7 @@ public sealed partial class MainWindow : Window
     public void SetLightMode()
     {
         SetWindowImmersiveDarkMode(hWnd, false);
+        appWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/light.ico"));
         //Application.Current.Resources["ToggleButtonBackground"] = Colors.Blue;
         //Application.Current.Resources["ToggleButtonBackgroundPointerOver"] = Colors.Blue;
         //Application.Current.Resources["ToggleButtonBackgroundPressed"] = Colors.Blue;
