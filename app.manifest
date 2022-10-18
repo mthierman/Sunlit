@@ -7,7 +7,7 @@
 		</application>
 	</compatibility>
 
-    <assemblyIdentity version="1.0.0.0" name="WinUI-Todo.app"/>
+    <assemblyIdentity version="1.0.0.0" name="Calendar.app"/>
 
 	<application xmlns="urn:schemas-microsoft-com:asm.v3">
 	<windowsSettings>

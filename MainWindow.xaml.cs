@@ -2,43 +2,41 @@
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using System;
-//using System.IO;
 using WinRT.Interop;
 
 namespace Calendar;
 
 internal sealed partial class MainWindow : Window
 {
-    public Setting setting = new();
+    public Setting setting = Setting.Load();
 
     public MainWindow()
     {
+        var handle = FetchWindowHandle(this);
+        var window = FetchAppWindow(this);
+        Title = setting.Title;
         InitializeComponent();
-
-        Title = "Calendar";
-
         InitializeListener();
-        InitializePresenter(appWindow);
-        InitializeDarkMode(hWnd);
+        InitializePresenter(window);
+        InitializeDarkMode(this);
         InitializeMica();
         CheckPresenter();
     }
 
-    public IntPtr hWnd
+    public static IntPtr FetchWindowHandle(MainWindow appwindow)
     {
-        get
-        { return WindowNative.GetWindowHandle(this); }
+        return WindowNative.GetWindowHandle(appwindow);
     }
 
-    public WindowId wndId
+    public static WindowId FetchWindowId(MainWindow appwindow)
     {
-        get
-        { return Win32Interop.GetWindowIdFromWindow(hWnd); }
+        IntPtr handle = FetchWindowHandle(appwindow);
+        return Win32Interop.GetWindowIdFromWindow(handle);
     }
 
-    public AppWindow appWindow
+    public static AppWindow FetchAppWindow(MainWindow appwindow)
     {
-        get
-        { return AppWindow.GetFromWindowId(wndId); }
+        WindowId id = FetchWindowId(appwindow);
+        return AppWindow.GetFromWindowId(id);
     }
 }

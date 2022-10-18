@@ -51,22 +51,23 @@ internal sealed partial class MainWindow : Window
         }
         switch (((FrameworkElement)Content).ActualTheme)
         {
-            case ElementTheme.Dark: SetDarkMode(); break;
-            case ElementTheme.Light: SetLightMode(); break;
+            case ElementTheme.Dark: SetDarkMode(this); break;
+            case ElementTheme.Light: SetLightMode(this); break;
         }
     }
 
     private void WindowSizeChanged(object sender, WindowSizeChangedEventArgs e)
     {
+        var window = FetchAppWindow(this);
         if (setting.PresenterType == "Compact")
         {
-            setting.CompactWidth = appWindow.Size.Width;
-            setting.CompactHeight = appWindow.Size.Height;
+            setting.CompactWidth = window.Size.Width;
+            setting.CompactHeight = window.Size.Height;
         }
         else
         {
-            setting.DefaultWidth = appWindow.Size.Width;
-            setting.DefaultHeight = appWindow.Size.Height;
+            setting.DefaultWidth = window.Size.Width;
+            setting.DefaultHeight = window.Size.Height;
         }
     }
 }

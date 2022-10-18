@@ -25,7 +25,7 @@
             Content="&#xEE49;"
             FontFamily="Segoe Fluent Icons"
             HorizontalAlignment="Right"
-            Margin="4,0">
+            Margin="4,4,4,0">
         </ToggleButton>
 
         <CalendarView
@@ -71,26 +71,22 @@
             BorderThickness="0"
             CornerRadius="8"
             Margin="4,0"
-            Padding="0"
-            HorizontalAlignment="Stretch">
+            Padding="0">
             <StackPanel
-                    Margin="4"
-                    HorizontalAlignment="Stretch">
-                <CheckBox>
-                    <TextBox
-                                Header="Task #1"
-                                >
-                    </TextBox>
+                Margin="4"
+                Padding="5,5,25,5">
+                <CheckBox MinHeight="0" MinWidth="0">
                 </CheckBox>
+                <TextBox Header="Task #1"></TextBox>
                 <CheckBox>
-                    <TextBox Header="Task #2"></TextBox>
                 </CheckBox>
+                <TextBox Header="Task #2"></TextBox>
                 <CheckBox>
-                    <TextBox Header="Task #3"></TextBox>
                 </CheckBox>
+                <TextBox Header="Task #3"></TextBox>
                 <CheckBox>
-                    <TextBox Header="Task #4"></TextBox>
                 </CheckBox>
+                <TextBox Header="Task #4"></TextBox>
             </StackPanel>
         </ScrollViewer>
 

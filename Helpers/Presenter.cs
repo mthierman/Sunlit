@@ -1,23 +1,16 @@
 ﻿using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls.Primitives;
-using System.IO;
 
 namespace Calendar;
 
 internal sealed partial class MainWindow : Window
 {
-
-
     private OverlappedPresenter _overlapped;
     private OverlappedPresenter _compact;
 
     public void InitializePresenter(AppWindow appwindow)
     {
-        if (File.Exists(Setting.Filename))
-        { setting = Setting.Load(); }
-        else
-        { Setting.Save(setting); }
         if (setting.PresenterType == "Compact")
         { CompactPresenter(appwindow); }
         else
@@ -67,16 +60,17 @@ internal sealed partial class MainWindow : Window
 
     public void PresenterToggle(object sender, RoutedEventArgs e)
     {
+        var window = FetchAppWindow(this);
         if (((ToggleButton)sender).IsChecked == false)
         {
-            DefaultPresenter(appWindow);
-            Resize(appWindow);
+            DefaultPresenter(window);
+            Resize(window);
             PresenterToggleButton.Content = "\uEE49";
         }
         else
         {
-            CompactPresenter(appWindow);
-            Resize(appWindow);
+            CompactPresenter(window);
+            Resize(window);
             PresenterToggleButton.Content = "\uEE47";
         }
     }

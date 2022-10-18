@@ -10,7 +10,7 @@ internal sealed partial class MainWindow : Window
 {
     private WindowsSystemDispatcherQueueHelper _wsdqHelper;
     public Microsoft.UI.Composition.SystemBackdrops.MicaController _micaController;
-    public Microsoft.UI.Composition.SystemBackdrops.DesktopAcrylicController _acrylicController;
+    //public Microsoft.UI.Composition.SystemBackdrops.DesktopAcrylicController _acrylicController;
     public Microsoft.UI.Composition.SystemBackdrops.SystemBackdropConfiguration _configurationSource;
 
     private class WindowsSystemDispatcherQueueHelper
@@ -44,41 +44,29 @@ internal sealed partial class MainWindow : Window
         }
     }
 
-    public void SetDarkMode()
+    public void SetDarkMode(MainWindow mainwindow)
     {
-        SetWindowImmersiveDarkMode(hWnd, true);
-        appWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/dark.ico"));
-        //Application.Current.Resources["ToggleButtonBackground"] = Colors.Aquamarine;
-        //Application.Current.Resources["ToggleButtonBackgroundPointerOver"] = Colors.Azure;
-        //Application.Current.Resources["ToggleButtonBackgroundPressed"] = Colors.PaleVioletRed;
-        //Application.Current.Resources["ToggleButtonBackgroundDisabled"] = Colors.Thistle;
-        //Application.Current.Resources["ToggleButtonBackgroundChecked"] = Colors.Wheat;
-        //Application.Current.Resources["ToggleButtonBackgroundCheckedPointerOver"] = Colors.OrangeRed;
-        //Application.Current.Resources["ToggleButtonBackgroundCheckedPressed"] = Colors.HotPink;
-        //Application.Current.Resources["ToggleButtonBackgroundCheckedDisabled"] = Colors.IndianRed;
+        var handle = FetchWindowHandle(mainwindow);
+        var window = FetchAppWindow(mainwindow);
+        SetWindowImmersiveDarkMode(handle, true);
+        window.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/dark.ico"));
     }
 
-    public void SetLightMode()
+    public void SetLightMode(MainWindow mainwindow)
     {
-        SetWindowImmersiveDarkMode(hWnd, false);
-        appWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/light.ico"));
-        //Application.Current.Resources["ToggleButtonBackground"] = Colors.Blue;
-        //Application.Current.Resources["ToggleButtonBackgroundPointerOver"] = Colors.Blue;
-        //Application.Current.Resources["ToggleButtonBackgroundPressed"] = Colors.Blue;
-        //Application.Current.Resources["ToggleButtonBackgroundDisabled"] = Colors.Blue;
-        //Application.Current.Resources["ToggleButtonBackgroundChecked"] = Colors.Blue;
-        //Application.Current.Resources["ToggleButtonBackgroundCheckedPointerOver"] = Colors.Blue;
-        //Application.Current.Resources["ToggleButtonBackgroundCheckedPressed"] = Colors.Blue;
-        //Application.Current.Resources["ToggleButtonBackgroundCheckedDisabled"] = Colors.Blue;
+        var handle = FetchWindowHandle(mainwindow);
+        var window = FetchAppWindow(mainwindow);
+        SetWindowImmersiveDarkMode(handle, false);
+        window.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/light.ico"));
     }
 
-    public void InitializeDarkMode(IntPtr hWnd)
+    public void InitializeDarkMode(MainWindow mainwindow)
     {
         ImportTheme.SetPreferredAppMode(PreferredAppMode.AllowDark);
         if (Application.Current.RequestedTheme == ApplicationTheme.Dark)
-        { SetDarkMode(); }
+        { SetDarkMode(mainwindow); }
         else
-        { SetLightMode(); }
+        { SetLightMode(mainwindow); }
     }
 
     bool InitializeMica()
@@ -145,7 +133,7 @@ internal sealed partial class MainWindow : Window
     private class ImportWindow
     {
         [DllImport("dwmapi.dll")]
-        public static extern int DwmSetWindowAttribute(IntPtr hWnd, DWMWINDOWATTRIBUTE dwAttr, ref int pvAttr, int cbAttr);
+        public static extern int DwmSetWindowAttribute(IntPtr handle, DWMWINDOWATTRIBUTE dwAttr, ref int pvAttr, int cbAttr);
     }
 
     private enum DWMWINDOWATTRIBUTE
@@ -153,9 +141,9 @@ internal sealed partial class MainWindow : Window
         DWMWA_USE_IMMERSIVE_DARK_MODE = 20
     }
 
-    public static void SetWindowImmersiveDarkMode(IntPtr hWnd, bool enabled)
+    public static void SetWindowImmersiveDarkMode(IntPtr handle, bool enabled)
     {
         int isEnabled = enabled ? 1 : 0;
-        ImportWindow.DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref isEnabled, sizeof(int));
+        ImportWindow.DwmSetWindowAttribute(handle, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref isEnabled, sizeof(int));
     }
 }
