@@ -1,12 +1,9 @@
 ﻿using Microsoft.UI.Xaml;
-using Windows.UI.ViewManagement;
 
 namespace Calendar;
 
-internal sealed partial class MainWindow : Window
+public sealed partial class MainWindow : Window
 {
-    private readonly UISettings _uiSettings = new();
-
     public void InitializeListener()
     {
         Activated += WindowActivated;

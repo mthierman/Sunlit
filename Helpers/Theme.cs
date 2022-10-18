@@ -6,7 +6,7 @@ using WinRT;
 
 namespace Calendar;
 
-internal sealed partial class MainWindow : Window
+public sealed partial class MainWindow : Window
 {
     private WindowsSystemDispatcherQueueHelper _wsdqHelper;
     public Microsoft.UI.Composition.SystemBackdrops.MicaController _micaController;

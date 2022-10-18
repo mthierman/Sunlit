@@ -5,8 +5,6 @@ namespace Calendar;
 
 public sealed partial class App : Application
 {
-    private Window _appWindow;
-
     public App()
     {
         const string _full = "--enable-features=OverlayScrollbar,msOverlayScrollbarWinStyle:scrollbar_mode/full_mode,msOverlayScrollbarWinStyleAnimation";
@@ -17,7 +15,7 @@ public sealed partial class App : Application
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
-        _appWindow = new MainWindow();
+        MainWindow _appWindow = new();
         _appWindow.Activate();
     }
 }

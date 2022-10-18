@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace Calendar;
 
-internal sealed class Setting
+public sealed class Setting
 {
     public string Type { get; } = nameof(Setting);
     public string Title { get; set; } = "Calendar";

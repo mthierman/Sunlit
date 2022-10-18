@@ -6,13 +6,12 @@ using WinRT.Interop;
 
 namespace Calendar;
 
-internal sealed partial class MainWindow : Window
+public sealed partial class MainWindow : Window
 {
     public Setting setting = Setting.Load();
 
     public MainWindow()
     {
-        var handle = FetchWindowHandle(this);
         var window = FetchAppWindow(this);
         Title = setting.Title;
         InitializeComponent();
