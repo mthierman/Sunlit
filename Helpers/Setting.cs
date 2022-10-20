@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Calendar;
 
@@ -23,25 +22,26 @@ public sealed class Setting
         {
             Directory.CreateDirectory(appdata.FullName);
         }
-        var options = new JsonSerializerOptions() { WriteIndented = true };
+        JsonSerializerOptions options = new JsonSerializerOptions { WriteIndented = true };
         using FileStream stream = File.Create(json.FullName);
-        using Utf8JsonWriter writer = new(stream);
-        JsonSerializer.Serialize(writer, setting, options);
+        JsonSerializer.Serialize(stream, setting, options);
     }
 
     public static Setting Load()
     {
         FileInfo json = new(_json);
+        Setting setting = new();
         if (json.Exists)
         {
-            var options = new JsonSerializerOptions() { NumberHandling = JsonNumberHandling.AllowReadingFromString };
-            byte[] stream = File.ReadAllBytes(json.FullName);
-            return JsonSerializer.Deserialize<Setting>(stream, options);
+            try
+            {
+                using FileStream stream = File.OpenRead(json.FullName);
+                setting = JsonSerializer.Deserialize<Setting>(stream);
+            }
+            catch
+            { }
         }
-        else
-        {
-            return new Setting();
-        }
+        return setting;
     }
 
     private static string _localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
