@@ -58,13 +58,13 @@ public sealed partial class MainWindow : Window
         {
             DefaultPresenter(window);
             Resize(window);
-            PresenterToggleButton.Content = "\uEE49";
+            PresenterToggleButton.Content = Icons.Expand;
         }
         else
         {
             CompactPresenter(window);
             Resize(window);
-            PresenterToggleButton.Content = "\uEE47";
+            PresenterToggleButton.Content = Icons.Contract;
         }
     }
 }

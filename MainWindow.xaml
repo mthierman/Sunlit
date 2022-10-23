@@ -8,12 +8,18 @@
     mc:Ignorable="d"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls">
 
-    <Grid Background="Transparent">
+    <Grid
+        Background="Transparent">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition
+                Height="auto" />
+            <RowDefinition
+                Height="auto" />
+            <RowDefinition
+                Height="auto" />
+            <RowDefinition
+                Height="300" />
         </Grid.RowDefinitions>
 
         <ToggleButton
@@ -21,11 +27,26 @@
             Background="Transparent"
             x:Name="PresenterToggleButton"
             Click="PresenterToggle"
-            Content="&#xEE49;"
+            Content="{x:Bind local:Icons.Expand}"
+            FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+            HorizontalAlignment="Right"
+            Margin="4">
+        </ToggleButton>
+
+        <!--<ToggleButton
+            Grid.Row="0"
+            Background="Transparent"
+            x:Name="PresenterToggleButton"
+            Click="PresenterToggle"
             FontFamily="Segoe Fluent Icons"
             HorizontalAlignment="Right"
             Margin="4,4,4,0">
-        </ToggleButton>
+            <Image Width="18" Stretch="Uniform" VerticalAlignment="Center">
+                <Image.Source>
+                    <SvgImageSource UriSource="Assets/expand-edit.svg" RasterizePixelHeight="48" RasterizePixelWidth="48"/>
+                </Image.Source>
+            </Image>
+        </ToggleButton>-->
 
         <CalendarView
             Grid.Row="1"
@@ -60,9 +81,9 @@
             MonthYearItemFontSize="16"
             Opacity="0.8"
             TodayFontWeight="Bold"
-            MinWidth="400"/>
+            MinWidth="400" />
 
-        <ScrollViewer
+        <!--<ScrollViewer
             Grid.Row="2"
             Background="{StaticResource AcrylicCalendar}"
             MaxHeight="100"
@@ -87,7 +108,7 @@
                 </CheckBox>
                 <TextBox Header="Task #4"></TextBox>
             </StackPanel>
-        </ScrollViewer>
+        </ScrollViewer>-->
 
         <!--<controls:WebView2
             Grid.Row="3"
