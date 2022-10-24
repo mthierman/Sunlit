@@ -37,7 +37,7 @@ public sealed partial class MainWindow : Window
         SizeChanged -= WindowSizeChanged;
         ((FrameworkElement)Content).ActualThemeChanged -= WindowThemeChanged;
         _configurationSource = null;
-        Setting.Save(setting);
+        Settings.Save(json, settings);
     }
 
     private void WindowThemeChanged(FrameworkElement sender, object args)
@@ -56,15 +56,15 @@ public sealed partial class MainWindow : Window
     private void WindowSizeChanged(object sender, WindowSizeChangedEventArgs e)
     {
         var window = FetchAppWindow(this);
-        if (setting.PresenterType == "Compact")
+        if (settings.Presenter.Type == "Compact")
         {
-            setting.CompactWidth = window.Size.Width;
-            setting.CompactHeight = window.Size.Height;
+            settings.Compact.Width = window.Size.Width;
+            settings.Compact.Height = window.Size.Height;
         }
         else
         {
-            setting.DefaultWidth = window.Size.Width;
-            setting.DefaultHeight = window.Size.Height;
+            settings.Default.Width = window.Size.Width;
+            settings.Default.Height = window.Size.Height;
         }
     }
 }

@@ -26,7 +26,8 @@
             Grid.Row="0"
             Background="Transparent"
             x:Name="PresenterToggleButton"
-            Click="PresenterToggle"
+            Checked="PresenterToggleButtonChecked"
+            Unchecked="PresenterToggleButtonUnchecked"
             HorizontalAlignment="Right"
             Margin="4">
             <FontIcon

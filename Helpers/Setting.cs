@@ -1,50 +1,72 @@
-﻿using System;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 
 namespace Calendar;
 
-public sealed class Setting
+public sealed class Settings
 {
-    public string Type { get; } = nameof(Setting);
-    public string Title { get; set; } = "Calendar";
-    public string PresenterType { get; set; } = "Default";
-    public int DefaultWidth { get; set; } = 800;
-    public int DefaultHeight { get; set; } = 600;
-    public int CompactWidth { get; set; } = 200;
-    public int CompactHeight { get; set; } = 400;
+    public AppPresenter Presenter { get; set; }
+    public DefaultWindow Default { get; set; }
+    public CompactWindow Compact { get; set; }
+    public readonly static JsonSerializerOptions Options = new() { WriteIndented = true };
 
-    public static void Save(Setting setting)
+    public Settings()
     {
-        DirectoryInfo appdata = new(_appData);
-        FileInfo json = new(_json);
-        if (!appdata.Exists)
-        {
-            Directory.CreateDirectory(appdata.FullName);
-        }
-        JsonSerializerOptions options = new JsonSerializerOptions { WriteIndented = true };
-        using FileStream stream = File.Create(json.FullName);
-        JsonSerializer.Serialize(stream, setting, options);
+        Presenter = new();
+        Default = new();
+        Compact = new();
     }
 
-    public static Setting Load()
+    public class AppPresenter
     {
-        FileInfo json = new(_json);
-        Setting setting = new();
-        if (json.Exists)
+        public string Type { get; set; } = "Default";
+    }
+
+    public class DefaultWindow
+    {
+        public int Width { get; set; } = 750;
+        public int Height { get; set; } = 450;
+    }
+
+    public class CompactWindow
+    {
+        public int Width { get; set; } = 500;
+        public int Height { get; set; } = 500;
+    }
+
+    public static void InitializeSettings(string appdata, string json)
+    {
+        if (!Directory.Exists(appdata))
+        { Directory.CreateDirectory(appdata); }
+        if (!File.Exists(json))
+        { using var stream = File.Create(json); }
+    }
+
+    public static Settings Load(string json)
+    {
+        var settings = new Settings();
+        if (File.Exists(json))
         {
             try
             {
-                using FileStream stream = File.OpenRead(json.FullName);
-                setting = JsonSerializer.Deserialize<Setting>(stream);
+                using var stream = File.OpenRead(json);
+                settings = JsonSerializer.Deserialize<Settings>(stream);
+                return settings;
             }
-            catch
-            { }
+            catch { }
         }
-        return setting;
+        return settings;
     }
 
-    private static string _localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-    private static string _appData = Path.Combine(_localAppData, "mthierman", "calendar");
-    private static string _json = Path.Combine(_appData, "Settings.json");
+    public static void Save(string json, Settings settings)
+    {
+        using var stream = File.OpenWrite(json);
+        JsonSerializer.Serialize(stream, settings, Options);
+    }
+
+    public static void Read(Settings settings)
+    {
+        Debug.Print(JsonSerializer.Serialize(settings, Options));
+    }
 }

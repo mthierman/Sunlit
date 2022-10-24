@@ -2,24 +2,57 @@
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using System;
+using System.IO;
 using WinRT.Interop;
 
 namespace Calendar;
 
 public sealed partial class MainWindow : Window
 {
-    public Setting setting = Setting.Load();
+    private readonly static string json = new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "mthierman", "calendar", "settings.json")).FullName;
+    private readonly static string appdata = new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "mthierman", "calendar")).FullName;
+    public Settings settings;
 
     public MainWindow()
     {
-        var window = FetchAppWindow(this);
-        Title = setting.Title;
+        Settings.InitializeSettings(appdata, json);
+        settings = Settings.Load(json);
+        Settings.Read(settings);
+
         InitializeComponent();
+
+        var window = FetchAppWindow(this);
+        Presenter.InitializeWindow(window, settings);
+        InitializeToggleButton();
         InitializeListener();
-        InitializePresenter(window);
         InitializeDarkMode(this);
         InitializeMica();
-        CheckPresenter();
+    }
+
+    public void InitializeToggleButton()
+    {
+        if (settings.Presenter.Type == "Default")
+        { PresenterToggleButton.IsChecked = false; }
+        else if (settings.Presenter.Type == "Compact")
+        { PresenterToggleButton.IsChecked = true; }
+    }
+
+    public void PresenterToggleButtonChecked(object sender, RoutedEventArgs e)
+    {
+        settings.Presenter.Type = "Compact";
+        var window = FetchAppWindow(this);
+        Presenter.InitializeWindow(window, settings);
+        //PresenterToggleButton.Content = Icons.Contract;
+        PresenterToggleButtonIcon.Glyph = Icons.Contract;
+    }
+
+    public void PresenterToggleButtonUnchecked(object sender, RoutedEventArgs e)
+    {
+        settings.Presenter.Type = "Default";
+        var window = FetchAppWindow(this);
+        Presenter.InitializeWindow(window, settings);
+        //PresenterToggleButton.Content = Icons.Expand;
+        PresenterToggleButtonIcon.Glyph = Icons.Expand;
     }
 
     public static IntPtr FetchWindowHandle(MainWindow appwindow)

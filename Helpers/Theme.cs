@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Composition.SystemBackdrops;
+using Microsoft.UI.Xaml;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -9,9 +10,9 @@ namespace Calendar;
 public sealed partial class MainWindow : Window
 {
     private WindowsSystemDispatcherQueueHelper _wsdqHelper;
-    public Microsoft.UI.Composition.SystemBackdrops.MicaController _micaController;
-    //public Microsoft.UI.Composition.SystemBackdrops.DesktopAcrylicController _acrylicController;
-    public Microsoft.UI.Composition.SystemBackdrops.SystemBackdropConfiguration _configurationSource;
+    public MicaController _micaController;
+    //public DesktopAcrylicController _acrylicController;
+    public SystemBackdropConfiguration _configurationSource;
 
     private class WindowsSystemDispatcherQueueHelper
     {
@@ -44,7 +45,7 @@ public sealed partial class MainWindow : Window
         }
     }
 
-    public void SetDarkMode(MainWindow mainwindow)
+    public static void SetDarkMode(MainWindow mainwindow)
     {
         var handle = FetchWindowHandle(mainwindow);
         var window = FetchAppWindow(mainwindow);
@@ -52,7 +53,7 @@ public sealed partial class MainWindow : Window
         window.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/dark.ico"));
     }
 
-    public void SetLightMode(MainWindow mainwindow)
+    public static void SetLightMode(MainWindow mainwindow)
     {
         var handle = FetchWindowHandle(mainwindow);
         var window = FetchAppWindow(mainwindow);
@@ -60,7 +61,7 @@ public sealed partial class MainWindow : Window
         window.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/light.ico"));
     }
 
-    public void InitializeDarkMode(MainWindow mainwindow)
+    public static void InitializeDarkMode(MainWindow mainwindow)
     {
         ImportTheme.SetPreferredAppMode(PreferredAppMode.AllowDark);
         if (Application.Current.RequestedTheme == ApplicationTheme.Dark)
@@ -71,16 +72,23 @@ public sealed partial class MainWindow : Window
 
     bool InitializeMica()
     {
-        if (Microsoft.UI.Composition.SystemBackdrops.MicaController.IsSupported())
+        if (MicaController.IsSupported())
         {
             _wsdqHelper = new WindowsSystemDispatcherQueueHelper();
             _wsdqHelper.EnsureWindowsSystemDispatcherQueueController();
-            _configurationSource = new Microsoft.UI.Composition.SystemBackdrops.SystemBackdropConfiguration();
-            _configurationSource.IsInputActive = true;
+            _configurationSource = new SystemBackdropConfiguration
+            {
+                IsInputActive = true
+            };
             SetConfigurationSourceTheme();
-            _micaController = new Microsoft.UI.Composition.SystemBackdrops.MicaController();
-            _micaController.Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.Base;
-            //m_micaController.Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.BaseAlt;
+            _micaController = new MicaController
+            {
+                Kind = MicaKind.Base
+            };
+            //_micaController = new MicaController
+            //{
+            //    Kind = MicaKind.BaseAlt
+            //};
             _micaController.AddSystemBackdropTarget(this.As<Microsoft.UI.Composition.ICompositionSupportsSystemBackdrop>());
             _micaController.SetSystemBackdropConfiguration(_configurationSource);
             return true;
@@ -94,10 +102,10 @@ public sealed partial class MainWindow : Window
     //    {
     //        _wsdqHelper = new WindowsSystemDispatcherQueueHelper();
     //        _wsdqHelper.EnsureWindowsSystemDispatcherQueueController();
-    //        _configurationSource = new Microsoft.UI.Composition.SystemBackdrops.SystemBackdropConfiguration();
+    //        _configurationSource = new SystemBackdropConfiguration();
     //        _configurationSource.IsInputActive = true;
     //        SetConfigurationSourceTheme();
-    //        _acrylicController = new Microsoft.UI.Composition.SystemBackdrops.DesktopAcrylicController();
+    //        _acrylicController = new DesktopAcrylicController();
     //        _acrylicController.AddSystemBackdropTarget(this.As<Microsoft.UI.Composition.ICompositionSupportsSystemBackdrop>());
     //        _acrylicController.SetSystemBackdropConfiguration(_configurationSource);
     //        return true;
@@ -109,9 +117,9 @@ public sealed partial class MainWindow : Window
     {
         switch (((FrameworkElement)Content).ActualTheme)
         {
-            case ElementTheme.Dark: _configurationSource.Theme = Microsoft.UI.Composition.SystemBackdrops.SystemBackdropTheme.Dark; break;
-            case ElementTheme.Light: _configurationSource.Theme = Microsoft.UI.Composition.SystemBackdrops.SystemBackdropTheme.Light; break;
-            case ElementTheme.Default: _configurationSource.Theme = Microsoft.UI.Composition.SystemBackdrops.SystemBackdropTheme.Default; break;
+            case ElementTheme.Dark: _configurationSource.Theme = SystemBackdropTheme.Dark; break;
+            case ElementTheme.Light: _configurationSource.Theme = SystemBackdropTheme.Light; break;
+            case ElementTheme.Default: _configurationSource.Theme = SystemBackdropTheme.Default; break;
         }
     }
 
