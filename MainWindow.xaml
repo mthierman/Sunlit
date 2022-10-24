@@ -27,11 +27,25 @@
             Background="Transparent"
             x:Name="PresenterToggleButton"
             Click="PresenterToggle"
-            Content="{x:Bind local:Icons.Expand}"
-            FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
             HorizontalAlignment="Right"
             Margin="4">
+            <FontIcon
+                x:Name="PresenterToggleButtonIcon"
+                FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                Glyph="{x:Bind local:Icons.Expand}" />
         </ToggleButton>
+
+        <!--<ToggleButton
+            Grid.Row="0"
+            Background="Transparent"
+            x:Name="PresenterToggleButton"
+            Click="PresenterToggle"
+            Content="{x:Bind local:Icons.Expand}"
+            FontSize="18"
+            FontFamily="FluentSystemIcons-Resizable"
+            HorizontalAlignment="Right"
+            Margin="4">
+        </ToggleButton>-->
 
         <!--<ToggleButton
             Grid.Row="0"
