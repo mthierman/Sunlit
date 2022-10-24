@@ -24,7 +24,7 @@ public sealed partial class MainWindow : Window
             internal int apartmentType;
         }
 
-        [DllImport("CoreMessaging.dll")]
+        [DllImport("CoreMessaging.dll", PreserveSig = false)]
         private static extern int CreateDispatcherQueueController([In] DispatcherQueueOptions options, [In, Out, MarshalAs(UnmanagedType.IUnknown)] ref object dispatcherQueueController);
         object _dispatcherQueueController = null;
         public void EnsureWindowsSystemDispatcherQueueController()
@@ -40,7 +40,7 @@ public sealed partial class MainWindow : Window
                 options.dwSize = Marshal.SizeOf(typeof(DispatcherQueueOptions));
                 options.threadType = 2;
                 options.apartmentType = 2;
-                CreateDispatcherQueueController(options, ref _dispatcherQueueController);
+                _ = CreateDispatcherQueueController(options, ref _dispatcherQueueController);
             }
         }
     }
@@ -63,7 +63,7 @@ public sealed partial class MainWindow : Window
 
     public static void InitializeDarkMode(MainWindow mainwindow)
     {
-        ImportTheme.SetPreferredAppMode(PreferredAppMode.AllowDark);
+        _ = ImportTheme.SetPreferredAppMode(PreferredAppMode.AllowDark);
         if (Application.Current.RequestedTheme == ApplicationTheme.Dark)
         { SetDarkMode(mainwindow); }
         else
@@ -152,6 +152,6 @@ public sealed partial class MainWindow : Window
     public static void SetWindowImmersiveDarkMode(IntPtr handle, bool enabled)
     {
         int isEnabled = enabled ? 1 : 0;
-        ImportWindow.DwmSetWindowAttribute(handle, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref isEnabled, sizeof(int));
+        _ = ImportWindow.DwmSetWindowAttribute(handle, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref isEnabled, sizeof(int));
     }
 }

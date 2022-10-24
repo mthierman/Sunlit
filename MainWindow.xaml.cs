@@ -15,12 +15,9 @@ public sealed partial class MainWindow : Window
 
     public MainWindow()
     {
-        Settings.InitializeSettings(appdata, json);
-        settings = Settings.Load(json);
-        Settings.Read(settings);
-
         InitializeComponent();
 
+        settings = Settings.Load(appdata, json);
         var window = FetchAppWindow(this);
         Presenter.InitializeWindow(window, settings);
         InitializeToggleButton();

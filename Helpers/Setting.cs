@@ -35,16 +35,12 @@ public sealed class Settings
         public int Height { get; set; } = 500;
     }
 
-    public static void InitializeSettings(string appdata, string json)
+    public static Settings Load(string appdata, string json)
     {
         if (!Directory.Exists(appdata))
         { Directory.CreateDirectory(appdata); }
         if (!File.Exists(json))
         { using var stream = File.Create(json); }
-    }
-
-    public static Settings Load(string json)
-    {
         var settings = new Settings();
         if (File.Exists(json))
         {
