@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Xaml;
-
-namespace Calendar;
+﻿namespace Calendar;
 
 public sealed partial class MainWindow : Window
 {

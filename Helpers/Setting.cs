@@ -1,8 +1,4 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Text.Json;
-
-namespace Calendar;
+﻿namespace Calendar;
 
 public sealed class Settings
 {
@@ -66,3 +62,4 @@ public sealed class Settings
         Debug.Print(JsonSerializer.Serialize(settings, Options));
     }
 }
+

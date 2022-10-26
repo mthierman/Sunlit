@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Windowing;
-
-namespace Calendar;
+﻿namespace Calendar;
 
 public sealed class Presenter
 {

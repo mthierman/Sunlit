@@ -1,16 +1,9 @@
-﻿using Microsoft.UI;
-using Microsoft.UI.Windowing;
-using Microsoft.UI.Xaml;
-using System;
-using System.IO;
-using WinRT.Interop;
-
-namespace Calendar;
+﻿namespace Calendar;
 
 public sealed partial class MainWindow : Window
 {
-    private readonly static string json = new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "mthierman", "calendar", "settings.json")).FullName;
     private readonly static string appdata = new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "mthierman", "calendar")).FullName;
+    private readonly static string json = new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "mthierman", "calendar", "settings.json")).FullName;
     public Settings settings;
 
     public MainWindow()

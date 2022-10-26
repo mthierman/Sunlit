@@ -1,11 +1,4 @@
-﻿using Microsoft.UI.Composition.SystemBackdrops;
-using Microsoft.UI.Xaml;
-using System;
-using System.IO;
-using System.Runtime.InteropServices;
-using WinRT;
-
-namespace Calendar;
+﻿namespace Calendar;
 
 public sealed partial class MainWindow : Window
 {
