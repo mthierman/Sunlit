@@ -1,68 +1,63 @@
 ﻿namespace Calendar;
-
 public sealed partial class MainWindow : Window
 {
-    public void InitializeListener()
+  public void InitializeListener()
+  {
+    Activated += WindowActivated;
+    Closed += WindowClosed;
+    ((FrameworkElement)Content).ActualThemeChanged += WindowThemeChanged;
+    SizeChanged += WindowSizeChanged;
+  }
+  private void WindowActivated(object sender, WindowActivatedEventArgs e)
+  {
+    if (_configurationSource != null)
     {
-        Activated += WindowActivated;
-        Closed += WindowClosed;
-        ((FrameworkElement)Content).ActualThemeChanged += WindowThemeChanged;
-        SizeChanged += WindowSizeChanged;
+      _configurationSource.IsInputActive = e.WindowActivationState != WindowActivationState.Deactivated;
     }
-
-    private void WindowActivated(object sender, WindowActivatedEventArgs e)
+  }
+  private void WindowClosed(object sender, WindowEventArgs e)
+  {
+    //if (_acrylicController != null)
+    //{
+    //    _acrylicController.Dispose();
+    //    _acrylicController = null;
+    //}
+    if (_micaController != null)
     {
-        if (_configurationSource != null)
-        {
-            _configurationSource.IsInputActive = e.WindowActivationState != WindowActivationState.Deactivated;
-        }
+      _micaController.Dispose();
+      _micaController = null;
     }
-
-    private void WindowClosed(object sender, WindowEventArgs e)
+    Activated -= WindowActivated;
+    Closed -= WindowClosed;
+    SizeChanged -= WindowSizeChanged;
+    ((FrameworkElement)Content).ActualThemeChanged -= WindowThemeChanged;
+    _configurationSource = null;
+    Settings.Save(json, settings);
+  }
+  private void WindowThemeChanged(FrameworkElement sender, object args)
+  {
+    if (_configurationSource != null)
     {
-        //if (_acrylicController != null)
-        //{
-        //    _acrylicController.Dispose();
-        //    _acrylicController = null;
-        //}
-        if (_micaController != null)
-        {
-            _micaController.Dispose();
-            _micaController = null;
-        }
-        Activated -= WindowActivated;
-        Closed -= WindowClosed;
-        SizeChanged -= WindowSizeChanged;
-        ((FrameworkElement)Content).ActualThemeChanged -= WindowThemeChanged;
-        _configurationSource = null;
-        Settings.Save(json, settings);
+      SetConfigurationSourceTheme();
     }
-
-    private void WindowThemeChanged(FrameworkElement sender, object args)
+    switch (((FrameworkElement)Content).ActualTheme)
     {
-        if (_configurationSource != null)
-        {
-            SetConfigurationSourceTheme();
-        }
-        switch (((FrameworkElement)Content).ActualTheme)
-        {
-            case ElementTheme.Dark: SetDarkMode(this); break;
-            case ElementTheme.Light: SetLightMode(this); break;
-        }
+      case ElementTheme.Dark: SetDarkMode(this); break;
+      case ElementTheme.Light: SetLightMode(this); break;
     }
-
-    private void WindowSizeChanged(object sender, WindowSizeChangedEventArgs e)
+  }
+  private void WindowSizeChanged(object sender, WindowSizeChangedEventArgs e)
+  {
+    var window = FetchAppWindow(this);
+    if (settings.Presenter.Type == "Compact")
     {
-        var window = FetchAppWindow(this);
-        if (settings.Presenter.Type == "Compact")
-        {
-            settings.Compact.Width = window.Size.Width;
-            settings.Compact.Height = window.Size.Height;
-        }
-        else
-        {
-            settings.Default.Width = window.Size.Width;
-            settings.Default.Height = window.Size.Height;
-        }
+      settings.Compact.Width = window.Size.Width;
+      settings.Compact.Height = window.Size.Height;
     }
+    else
+    {
+      settings.Default.Width = window.Size.Width;
+      settings.Default.Height = window.Size.Height;
+    }
+  }
 }
