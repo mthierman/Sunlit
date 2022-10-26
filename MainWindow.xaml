@@ -17,7 +17,7 @@
       Checked="PresenterToggleButtonChecked"
       Unchecked="PresenterToggleButtonUnchecked"
       HorizontalAlignment="Left"
-      Margin="6,0,0,0">
+      Margin="6,6,0,0">
       <FontIcon
         x:Name="PresenterToggleButtonIcon"
         FontFamily="{ThemeResource SymbolThemeFontFamily}"

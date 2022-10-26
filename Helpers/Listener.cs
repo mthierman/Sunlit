@@ -17,11 +17,6 @@ public sealed partial class MainWindow : Window
   }
   private void WindowClosed(object sender, WindowEventArgs e)
   {
-    //if (_acrylicController != null)
-    //{
-    //    _acrylicController.Dispose();
-    //    _acrylicController = null;
-    //}
     if (_micaController != null)
     {
       _micaController.Dispose();
@@ -32,7 +27,7 @@ public sealed partial class MainWindow : Window
     SizeChanged -= WindowSizeChanged;
     ((FrameworkElement)Content).ActualThemeChanged -= WindowThemeChanged;
     _configurationSource = null;
-    Settings.Save(json, settings);
+    Settings.Save(Settings.json, settings);
   }
   private void WindowThemeChanged(FrameworkElement sender, object args)
   {
@@ -48,7 +43,7 @@ public sealed partial class MainWindow : Window
   }
   private void WindowSizeChanged(object sender, WindowSizeChangedEventArgs e)
   {
-    var window = FetchAppWindow(this);
+    var window = Presenter.FetchAppWindow(this);
     if (settings.Presenter.Type == "Compact")
     {
       settings.Compact.Width = window.Size.Width;

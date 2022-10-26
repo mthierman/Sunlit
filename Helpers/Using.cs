@@ -9,5 +9,3 @@ global using System.Runtime.InteropServices;
 global using System.Text.Json;
 global using WinRT;
 global using WinRT.Interop;
-
-namespace Calendar;

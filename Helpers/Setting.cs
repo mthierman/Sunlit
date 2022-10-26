@@ -4,6 +4,8 @@ public sealed class Settings
   public AppPresenter Presenter { get; set; }
   public DefaultWindow Default { get; set; }
   public CompactWindow Compact { get; set; }
+  public readonly static string appdata = new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "mthierman", "calendar")).FullName;
+  public readonly static string json = new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "mthierman", "calendar", "settings.json")).FullName;
   public readonly static JsonSerializerOptions Options = new() { WriteIndented = true };
   public Settings()
   {

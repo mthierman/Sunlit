@@ -3,7 +3,6 @@ public sealed partial class MainWindow : Window
 {
   private WindowsSystemDispatcherQueueHelper _wsdqHelper;
   public MicaController _micaController;
-  //public DesktopAcrylicController _acrylicController;
   public SystemBackdropConfiguration _configurationSource;
   private class WindowsSystemDispatcherQueueHelper
   {
@@ -37,17 +36,17 @@ public sealed partial class MainWindow : Window
   }
   public static void SetDarkMode(MainWindow mainwindow)
   {
-    var handle = FetchWindowHandle(mainwindow);
-    var window = FetchAppWindow(mainwindow);
+    var handle = Presenter.FetchWindowHandle(mainwindow);
+    var window = Presenter.FetchAppWindow(mainwindow);
     SetWindowImmersiveDarkMode(handle, true);
-    window.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/dark.ico"));
+    //window.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/dark.ico"));
   }
   public static void SetLightMode(MainWindow mainwindow)
   {
-    var handle = FetchWindowHandle(mainwindow);
-    var window = FetchAppWindow(mainwindow);
+    var handle = Presenter.FetchWindowHandle(mainwindow);
+    var window = Presenter.FetchAppWindow(mainwindow);
     SetWindowImmersiveDarkMode(handle, false);
-    window.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/light.ico"));
+    //window.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/light.ico"));
   }
   public static void InitializeDarkMode(MainWindow mainwindow)
   {
@@ -71,33 +70,14 @@ public sealed partial class MainWindow : Window
       _micaController = new MicaController
       {
         Kind = MicaKind.Base
+        //Kind = MicaKind.BaseAlt
       };
-      //_micaController = new MicaController
-      //{
-      //    Kind = MicaKind.BaseAlt
-      //};
       _micaController.AddSystemBackdropTarget(this.As<Microsoft.UI.Composition.ICompositionSupportsSystemBackdrop>());
       _micaController.SetSystemBackdropConfiguration(_configurationSource);
       return true;
     }
     return false;
   }
-  //bool InitializeAcrylic()
-  //{
-  //    if (Microsoft.UI.Composition.SystemBackdrops.DesktopAcrylicController.IsSupported())
-  //    {
-  //        _wsdqHelper = new WindowsSystemDispatcherQueueHelper();
-  //        _wsdqHelper.EnsureWindowsSystemDispatcherQueueController();
-  //        _configurationSource = new SystemBackdropConfiguration();
-  //        _configurationSource.IsInputActive = true;
-  //        SetConfigurationSourceTheme();
-  //        _acrylicController = new DesktopAcrylicController();
-  //        _acrylicController.AddSystemBackdropTarget(this.As<Microsoft.UI.Composition.ICompositionSupportsSystemBackdrop>());
-  //        _acrylicController.SetSystemBackdropConfiguration(_configurationSource);
-  //        return true;
-  //    }
-  //    return false;
-  //}
   public void SetConfigurationSourceTheme()
   {
     switch (((FrameworkElement)Content).ActualTheme)

@@ -1,6 +1,20 @@
 ﻿namespace Calendar;
-public sealed class Presenter
+public class Presenter
 {
+  public static IntPtr FetchWindowHandle(MainWindow appwindow)
+  {
+    return WindowNative.GetWindowHandle(appwindow);
+  }
+  public static WindowId FetchWindowId(MainWindow appwindow)
+  {
+    IntPtr handle = FetchWindowHandle(appwindow);
+    return Win32Interop.GetWindowIdFromWindow(handle);
+  }
+  public static AppWindow FetchAppWindow(MainWindow appwindow)
+  {
+    WindowId id = FetchWindowId(appwindow);
+    return AppWindow.GetFromWindowId(id);
+  }
   public static void InitializeWindow(AppWindow appwindow, Settings settings)
   {
     if (settings.Presenter.Type == "Default")
