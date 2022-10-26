@@ -17,6 +17,8 @@ public sealed partial class MainWindow : Window
     {
         InitializeComponent();
 
+        Title = "Calendar";
+
         settings = Settings.Load(appdata, json);
         var window = FetchAppWindow(this);
         Presenter.InitializeWindow(window, settings);
