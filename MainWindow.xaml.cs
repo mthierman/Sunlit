@@ -11,12 +11,12 @@ public sealed partial class MainWindow : Window
     var window = Presenter.FetchAppWindow(this);
     window.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/dual.ico"));
     Presenter.InitializeWindow(window, settings);
-    InitializeToggleButton();
+    InitializePresenterToggleButton();
     InitializeListener();
     InitializeDarkMode(this);
     InitializeMica();
   }
-  public void InitializeToggleButton()
+  public void InitializePresenterToggleButton()
   {
     if (settings.Presenter.Type == "Default")
     { PresenterToggleButton.IsChecked = false; }
