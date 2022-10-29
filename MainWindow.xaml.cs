@@ -9,7 +9,7 @@ public sealed partial class MainWindow : Window
 
     settings = Settings.Load(Settings.appdata, Settings.json);
     var window = Presenter.FetchAppWindow(this);
-    window.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/dual.ico"));
+    window.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets\\Figma\\dual.ico"));
     Presenter.InitializeWindow(window, settings);
     InitializePresenterToggleButton();
     InitializeListener();

@@ -4,12 +4,67 @@
 		<TargetFramework>net6.0-windows10.0.22621.0</TargetFramework>
 		<TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
 		<RootNamespace>Calendar</RootNamespace>
-		<PublishProfile>win10-x64.pubxml</PublishProfile>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<Platforms>x86;x64;arm64</Platforms>
+		<RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
+		<PublishProfile>win10-$(Platform).pubxml</PublishProfile>
 		<UseWinUI>true</UseWinUI>
 		<EnableMsixTooling>true</EnableMsixTooling>
-		<ApplicationIcon>Assets\dual.ico</ApplicationIcon>
-		<!--<ApplicationManifest>app.manifest</ApplicationManifest>-->
+		<StartupObject>Calendar.Program</StartupObject>
+		<Nullable>disable</Nullable>
+		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+		<PackageCertificateKeyFile>Calendar_TemporaryKey.pfx</PackageCertificateKeyFile>
+		<AppxPackageSigningTimestampDigestAlgorithm>SHA512</AppxPackageSigningTimestampDigestAlgorithm>
+		<AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+		<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+		<GenerateTestArtifacts>True</GenerateTestArtifacts>
+		<AppxBundle>Never</AppxBundle>
+		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+		<ApplicationIcon>Assets\Figma\dual.ico</ApplicationIcon>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="Assets\Generated\LargeTile.scale-100.png" />
+	  <None Remove="Assets\Generated\LargeTile.scale-125.png" />
+	  <None Remove="Assets\Generated\LargeTile.scale-150.png" />
+	  <None Remove="Assets\Generated\LargeTile.scale-200.png" />
+	  <None Remove="Assets\Generated\LargeTile.scale-400.png" />
+	  <None Remove="Assets\Generated\SmallTile.scale-100.png" />
+	  <None Remove="Assets\Generated\SmallTile.scale-125.png" />
+	  <None Remove="Assets\Generated\SmallTile.scale-150.png" />
+	  <None Remove="Assets\Generated\SmallTile.scale-200.png" />
+	  <None Remove="Assets\Generated\SmallTile.scale-400.png" />
+	  <None Remove="Assets\Generated\Square150x150Logo.scale-100.png" />
+	  <None Remove="Assets\Generated\Square150x150Logo.scale-125.png" />
+	  <None Remove="Assets\Generated\Square150x150Logo.scale-150.png" />
+	  <None Remove="Assets\Generated\Square150x150Logo.scale-200.png" />
+	  <None Remove="Assets\Generated\Square150x150Logo.scale-400.png" />
+	  <None Remove="Assets\Generated\Square44x44Logo.scale-100.png" />
+	  <None Remove="Assets\Generated\Square44x44Logo.scale-125.png" />
+	  <None Remove="Assets\Generated\Square44x44Logo.scale-150.png" />
+	  <None Remove="Assets\Generated\Square44x44Logo.scale-200.png" />
+	  <None Remove="Assets\Generated\Square44x44Logo.scale-400.png" />
+	  <None Remove="Assets\Generated\Square44x44Logo.targetsize-16.png" />
+	  <None Remove="Assets\Generated\Square44x44Logo.targetsize-16_altform-lightunplated.png" />
+	  <None Remove="Assets\Generated\Square44x44Logo.targetsize-24.png" />
+	  <None Remove="Assets\Generated\Square44x44Logo.targetsize-256.png" />
+	  <None Remove="Assets\Generated\Square44x44Logo.targetsize-256_altform-unplated.png" />
+	  <None Remove="Assets\Generated\Square44x44Logo.targetsize-32.png" />
+	  <None Remove="Assets\Generated\Square44x44Logo.targetsize-48.png" />
+	  <None Remove="Assets\Generated\StoreLogo.scale-100.png" />
+	  <None Remove="Assets\Generated\StoreLogo.scale-125.png" />
+	  <None Remove="Assets\Generated\StoreLogo.scale-150.png" />
+	  <None Remove="Assets\Generated\StoreLogo.scale-200.png" />
+	  <None Remove="Assets\Generated\StoreLogo.scale-400.png" />
+	  <None Remove="Assets\Generated\Wide310x150Logo.scale-100.png" />
+	  <None Remove="Assets\Generated\Wide310x150Logo.scale-125.png" />
+	  <None Remove="Assets\Generated\Wide310x150Logo.scale-150.png" />
+	  <None Remove="Assets\Generated\Wide310x150Logo.scale-200.png" />
+	  <None Remove="Assets\Generated\Wide310x150Logo.scale-400.png" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.1.5" />
@@ -24,6 +79,17 @@
 	-->
 	<ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
 		<ProjectCapability Include="Msix" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Update="Assets\Figma\dual.ico">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+	<ItemGroup>
+	  <None Update="LICENSE.txt">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 
 	<!-- 
