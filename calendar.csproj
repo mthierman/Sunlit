@@ -23,47 +23,16 @@
 		<GenerateTestArtifacts>True</GenerateTestArtifacts>
 		<AppxBundle>Never</AppxBundle>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-		<ApplicationIcon>Assets\Figma\dual.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Assets\Generated\LargeTile.scale-100.png" />
-	  <None Remove="Assets\Generated\LargeTile.scale-125.png" />
-	  <None Remove="Assets\Generated\LargeTile.scale-150.png" />
-	  <None Remove="Assets\Generated\LargeTile.scale-200.png" />
-	  <None Remove="Assets\Generated\LargeTile.scale-400.png" />
-	  <None Remove="Assets\Generated\SmallTile.scale-100.png" />
-	  <None Remove="Assets\Generated\SmallTile.scale-125.png" />
-	  <None Remove="Assets\Generated\SmallTile.scale-150.png" />
-	  <None Remove="Assets\Generated\SmallTile.scale-200.png" />
-	  <None Remove="Assets\Generated\SmallTile.scale-400.png" />
-	  <None Remove="Assets\Generated\Square150x150Logo.scale-100.png" />
-	  <None Remove="Assets\Generated\Square150x150Logo.scale-125.png" />
-	  <None Remove="Assets\Generated\Square150x150Logo.scale-150.png" />
-	  <None Remove="Assets\Generated\Square150x150Logo.scale-200.png" />
-	  <None Remove="Assets\Generated\Square150x150Logo.scale-400.png" />
-	  <None Remove="Assets\Generated\Square44x44Logo.scale-100.png" />
-	  <None Remove="Assets\Generated\Square44x44Logo.scale-125.png" />
-	  <None Remove="Assets\Generated\Square44x44Logo.scale-150.png" />
-	  <None Remove="Assets\Generated\Square44x44Logo.scale-200.png" />
-	  <None Remove="Assets\Generated\Square44x44Logo.scale-400.png" />
-	  <None Remove="Assets\Generated\Square44x44Logo.targetsize-16.png" />
-	  <None Remove="Assets\Generated\Square44x44Logo.targetsize-16_altform-lightunplated.png" />
-	  <None Remove="Assets\Generated\Square44x44Logo.targetsize-24.png" />
-	  <None Remove="Assets\Generated\Square44x44Logo.targetsize-256.png" />
-	  <None Remove="Assets\Generated\Square44x44Logo.targetsize-256_altform-unplated.png" />
-	  <None Remove="Assets\Generated\Square44x44Logo.targetsize-32.png" />
-	  <None Remove="Assets\Generated\Square44x44Logo.targetsize-48.png" />
-	  <None Remove="Assets\Generated\StoreLogo.scale-100.png" />
-	  <None Remove="Assets\Generated\StoreLogo.scale-125.png" />
-	  <None Remove="Assets\Generated\StoreLogo.scale-150.png" />
-	  <None Remove="Assets\Generated\StoreLogo.scale-200.png" />
-	  <None Remove="Assets\Generated\StoreLogo.scale-400.png" />
-	  <None Remove="Assets\Generated\Wide310x150Logo.scale-100.png" />
-	  <None Remove="Assets\Generated\Wide310x150Logo.scale-125.png" />
-	  <None Remove="Assets\Generated\Wide310x150Logo.scale-150.png" />
-	  <None Remove="Assets\Generated\Wide310x150Logo.scale-200.png" />
-	  <None Remove="Assets\Generated\Wide310x150Logo.scale-400.png" />
+		<Content Include="Assets\SplashScreen.scale-200.png" />
+		<Content Include="Assets\LockScreenLogo.scale-200.png" />
+		<Content Include="Assets\Square150x150Logo.scale-200.png" />
+		<Content Include="Assets\Square44x44Logo.scale-200.png" />
+		<Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
+		<Content Include="Assets\StoreLogo.png" />
+		<Content Include="Assets\Wide310x150Logo.scale-200.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -81,10 +50,10 @@
 		<ProjectCapability Include="Msix" />
 	</ItemGroup>
 	<ItemGroup>
-	  <None Update="LICENSE.txt">
-	    <Pack>True</Pack>
-	    <PackagePath>\</PackagePath>
-	  </None>
+		<None Update="LICENSE.txt">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
 	</ItemGroup>
 
 	<!-- 
