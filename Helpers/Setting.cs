@@ -1,4 +1,5 @@
 ﻿namespace Calendar;
+
 public sealed class Settings
 {
   public AppPresenter Presenter { get; set; }

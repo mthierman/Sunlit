@@ -1,4 +1,5 @@
 ﻿namespace Calendar;
+
 public sealed class Icons
 {
   public const string Expand = "\uEE49";

@@ -1,4 +1,5 @@
 ﻿namespace Calendar;
+
 public class Presenter
 {
   public static IntPtr FetchWindowHandle(MainWindow appwindow)

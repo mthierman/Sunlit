@@ -1,4 +1,5 @@
 ﻿namespace Calendar;
+
 public sealed partial class App : Application
 {
   public App()

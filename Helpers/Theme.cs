@@ -1,4 +1,5 @@
 ﻿namespace Calendar;
+
 public sealed partial class MainWindow : Window
 {
   private WindowsSystemDispatcherQueueHelper _wsdqHelper;
