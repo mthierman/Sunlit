@@ -1,10 +1,12 @@
 {
-  "profiles": {
-    "Calendar (Unpackaged)": {
-      "commandName": "Project"
-    },
-    "Calendar (Package)": {
-      "commandName": "MsixPackage"
+    "profiles": {
+        "Calendar (Packaged)": {
+            "commandName": "MsixPackage",
+            "nativeDebugging": false
+        },
+        "Calendar (Unpackaged)": {
+            "commandName": "Project",
+            "nativeDebugging": false
+        }
     }
-  }
 }

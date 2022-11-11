@@ -8,10 +8,9 @@
 		<Platforms>x86;x64;arm64</Platforms>
 		<RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
 		<PublishProfile>win10-$(Platform).pubxml</PublishProfile>
-		<UseWinUI>true</UseWinUI>
-		<EnableMsixTooling>true</EnableMsixTooling>
+		<UseWinUI>True</UseWinUI>
+		<EnableMsixTooling>True</EnableMsixTooling>
 		<!--<WindowsPackageType>None</WindowsPackageType>-->
-		<Nullable>disable</Nullable>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
 		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
@@ -26,9 +25,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Content Include="Assets\Dark.ico" />
+		<Content Include="Assets\Light.ico" />
+		<Content Include="Assets\Square44x44Logo.scale-200.png" />
 		<Content Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-48.png" />
 		<Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-48.png" />
-		<Content Include="Assets\Square44x44Logo.scale-200.png" />
 		<Content Include="Assets\Square150x150Logo.scale-200.png" />
 		<Content Include="Assets\Wide310x150Logo.scale-200.png" />
 	</ItemGroup>
@@ -46,11 +47,11 @@
 		<Manifest Include="$(ApplicationManifest)" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
+	<ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='True' and '$(EnableMsixTooling)'=='True'">
 		<ProjectCapability Include="Msix" />
 	</ItemGroup>
 
-	<PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
-		<HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
+	<PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='True' and '$(EnableMsixTooling)'=='True'">
+		<HasPackageAndPublishMenu>True</HasPackageAndPublishMenu>
 	</PropertyGroup>
 </Project>
