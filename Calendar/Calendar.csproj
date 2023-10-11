@@ -10,7 +10,8 @@
 		<PublishProfile>win10-$(Platform).pubxml</PublishProfile>
 		<UseWinUI>True</UseWinUI>
 		<EnableMsixTooling>True</EnableMsixTooling>
-		<!--<WindowsPackageType>None</WindowsPackageType>-->
+		<WindowsPackageType>None</WindowsPackageType>
+		<WindowsAppSDKSelfContained>True</WindowsAppSDKSelfContained>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -29,11 +30,13 @@
 		<Manifest Include="$(ApplicationManifest)" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='True' and '$(EnableMsixTooling)'=='True'">
+	<ItemGroup
+		Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='True' and '$(EnableMsixTooling)'=='True'">
 		<ProjectCapability Include="Msix" />
 	</ItemGroup>
 
-	<PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='True' and '$(EnableMsixTooling)'=='True'">
+	<PropertyGroup
+		Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='True' and '$(EnableMsixTooling)'=='True'">
 		<HasPackageAndPublishMenu>True</HasPackageAndPublishMenu>
 	</PropertyGroup>
 </Project>
