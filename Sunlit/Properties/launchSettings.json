@@ -1,10 +1,10 @@
 {
     "profiles": {
-        "Calendar (Packaged)": {
+        "Sunlit (Packaged)": {
             "commandName": "MsixPackage",
             "nativeDebugging": false
         },
-        "Calendar (Unpackaged)": {
+        "Sunlit (Unpackaged)": {
             "commandName": "Project",
             "nativeDebugging": false
         }

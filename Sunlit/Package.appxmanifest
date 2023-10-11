@@ -14,9 +14,9 @@
 		Version="1.0.0.0" />
 
 	<Properties>
-		<DisplayName>Calendar</DisplayName>
+		<DisplayName>Sunlit</DisplayName>
 		<PublisherDisplayName>Test</PublisherDisplayName>
-		<Logo>Assets\StoreLogo.png</Logo>
+		<!-- <Logo>Assets\StoreLogo.png</Logo> -->
 	</Properties>
 
 	<Dependencies>
@@ -32,13 +32,17 @@
 		<Application Id="App"
 			Executable="$targetnametoken$.exe"
 			EntryPoint="$targetentrypoint$">
-			<uap:VisualElements
-				DisplayName="Calendar"
-				Description="Calendar"
+			<!-- <uap:VisualElements
+				DisplayName="Sunlit"
+				Description="Sunlit"
 				BackgroundColor="transparent"
 				Square150x150Logo="Assets\Square150x150Logo.png"
-				Square44x44Logo="Assets\Square44x44Logo.png">
-				<uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" />
+				Square44x44Logo="Assets\Square44x44Logo.png"> -->
+			<uap:VisualElements
+				DisplayName="Sunlit"
+				Description="Sunlit"
+				BackgroundColor="transparent">
+				<!-- <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" /> -->
 			</uap:VisualElements>
 			<uap7:Properties>
 				<uap8:ActiveCodePage>UTF-8</uap8:ActiveCodePage>

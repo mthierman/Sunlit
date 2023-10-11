@@ -1,4 +1,4 @@
-﻿namespace Calendar;
+﻿namespace Sunlit;
 
 public sealed partial class MainWindow : Window
 {
@@ -40,14 +40,14 @@ public sealed partial class MainWindow : Window
         var handle = Presenter.FetchWindowHandle(mainwindow);
         var window = Presenter.FetchAppWindow(mainwindow);
         SetWindowImmersiveDarkMode(handle, true);
-        window.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets", "Dark.ico"));
+        //window.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets", "Dark.ico"));
     }
     public static void SetLightMode(MainWindow mainwindow)
     {
         var handle = Presenter.FetchWindowHandle(mainwindow);
         var window = Presenter.FetchAppWindow(mainwindow);
         SetWindowImmersiveDarkMode(handle, false);
-        window.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets", "Light.ico"));
+        //window.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets", "Light.ico"));
     }
     public static void InitializeDarkMode(MainWindow mainwindow)
     {

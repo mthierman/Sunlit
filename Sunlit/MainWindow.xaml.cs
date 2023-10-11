@@ -1,4 +1,4 @@
-﻿namespace Calendar;
+﻿namespace Sunlit;
 
 public sealed partial class MainWindow : Window
 {
@@ -6,11 +6,13 @@ public sealed partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        Title = "Calendar";
+        Title = "Sunlit";
 
         settings = Settings.Load(Settings.appdata, Settings.json);
         var window = Presenter.FetchAppWindow(this);
-        //window.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets", "Calendar.ico"));
+
+        window.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets", "icon.ico"));
+
         Presenter.InitializeWindow(window, settings);
         InitializePresenterToggleButton();
         InitializeListener();

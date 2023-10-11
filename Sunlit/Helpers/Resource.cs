@@ -1,4 +1,4 @@
-﻿namespace Calendar;
+﻿namespace Sunlit;
 
 public sealed class Icons
 {
