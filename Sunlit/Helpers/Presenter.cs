@@ -6,16 +6,19 @@ public class Presenter
     {
         return WindowNative.GetWindowHandle(appwindow);
     }
+
     public static WindowId FetchWindowId(MainWindow appwindow)
     {
         IntPtr handle = FetchWindowHandle(appwindow);
         return Win32Interop.GetWindowIdFromWindow(handle);
     }
+
     public static AppWindow FetchAppWindow(MainWindow appwindow)
     {
         WindowId id = FetchWindowId(appwindow);
         return AppWindow.GetFromWindowId(id);
     }
+
     public static void InitializeWindow(AppWindow appwindow, Settings settings)
     {
         if (settings.Presenter.Type == "Default")
@@ -29,6 +32,7 @@ public class Presenter
             appwindow.Resize(new Windows.Graphics.SizeInt32 { Width = settings.Compact.Width, Height = settings.Compact.Height });
         }
     }
+
     public static void DefaultPresenter(AppWindow appwindow, Settings settings)
     {
         appwindow.SetPresenter(AppWindowPresenterKind.Overlapped);
@@ -38,6 +42,7 @@ public class Presenter
         _overlapped.IsMinimizable = true;
         settings.Presenter.Type = "Default";
     }
+
     public static void CompactPresenter(AppWindow appwindow, Settings settings)
     {
         appwindow.SetPresenter(AppWindowPresenterKind.Overlapped);

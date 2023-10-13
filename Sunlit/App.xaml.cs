@@ -6,9 +6,12 @@ public sealed partial class App : Application
     {
         InitializeComponent();
     }
+
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
-        MainWindow _appWindow = new();
-        _appWindow.Activate();
+        m_window = new MainWindow();
+        m_window.Activate();
     }
+
+    private MainWindow m_window;
 }

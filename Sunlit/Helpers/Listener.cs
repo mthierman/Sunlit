@@ -9,6 +9,7 @@ public sealed partial class MainWindow : Window
         ((FrameworkElement)Content).ActualThemeChanged += WindowThemeChanged;
         SizeChanged += WindowSizeChanged;
     }
+
     private void WindowActivated(object sender, WindowActivatedEventArgs e)
     {
         if (_configurationSource != null)
@@ -16,13 +17,9 @@ public sealed partial class MainWindow : Window
             _configurationSource.IsInputActive = e.WindowActivationState != WindowActivationState.Deactivated;
         }
     }
+
     private void WindowClosed(object sender, WindowEventArgs e)
     {
-        if (_micaController != null)
-        {
-            _micaController.Dispose();
-            _micaController = null;
-        }
         Activated -= WindowActivated;
         Closed -= WindowClosed;
         SizeChanged -= WindowSizeChanged;
@@ -30,6 +27,7 @@ public sealed partial class MainWindow : Window
         _configurationSource = null;
         Settings.Save(Settings.json, settings);
     }
+
     private void WindowThemeChanged(FrameworkElement sender, object args)
     {
         if (_configurationSource != null)
@@ -42,6 +40,7 @@ public sealed partial class MainWindow : Window
             case ElementTheme.Light: SetLightMode(this); break;
         }
     }
+
     private void WindowSizeChanged(object sender, WindowSizeChangedEventArgs e)
     {
         var window = Presenter.FetchAppWindow(this);
