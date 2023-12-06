@@ -1,5 +1,5 @@
-<img src="./Sunlit/Assets/banner.svg" width="200">
+<img src="./Sunlit/Assets/Banner.svg" width="200">
 
 # Minimal calendar for Windows
 
-<img src="./Sunlit/Assets/screenshot.png" width="400">
+<img src="./Sunlit/Assets/Screenshot.png" width="400">
